@@ -7,6 +7,7 @@ project(
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/antlr4)
 
 find_program(CLANG_TIDY_EXE NAMES clang-tidy-14 clang-tidy)
 if (NOT CLANG_TIDY_EXE)
