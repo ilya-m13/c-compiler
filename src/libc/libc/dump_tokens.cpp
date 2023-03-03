@@ -5,7 +5,7 @@
 
 namespace c {
 
-void dump_tokens(std::ifstream &in, std::ostream &out) {
+void dump_tokens(std::istream &in, std::ostream &out) {
     antlr4::ANTLRInputStream antlr_stream(in);
     CLexer lexer(&antlr_stream);
 
