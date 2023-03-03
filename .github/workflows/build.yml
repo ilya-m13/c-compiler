@@ -15,6 +15,9 @@ jobs:
       - name: Install clang-tidy
         run: sudo apt install clang-tidy
 
+      - name: Install ninja-build
+        run: sudo apt install ninja-build
+
       - name: Configure CMake
         run: cmake --preset release
 
