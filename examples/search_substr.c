@@ -1,3 +1,10 @@
+/*
+Comment
+newline
+*/
+
+// Comment
+
 #include <stdio.h>
 #include <string.h>
 
