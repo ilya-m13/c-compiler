@@ -13,7 +13,8 @@
             "cacheVariables": {
                 "ANTLR_EXECUTABLE": "${sourceDir}/external/antlr4-runtime/antlr-4.12.0-complete.jar",
                 "ANTLR4_TAG": "4.12.0",
-                "BUILD_GMOCK": "OFF"
+                "BUILD_GMOCK": "OFF",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++"
             }
         },
         {
