@@ -8,8 +8,13 @@
 
 int main(int argc, char **argv) {
     cxxopts::Options options("c-compiler");
-    options.add_options()("file-path", "", cxxopts::value<std::string>())(
-        "h,help", "")("dump-tokens", "");
+    // clang-format off
+    options.add_options()
+        ("file-path", "", cxxopts::value<std::string>())
+        ("dump-tokens", "")
+        ("h,help", "")
+    ;
+    // clang-format on
     const auto result = options.parse(argc, argv);
 
     if (result.count("file-path") != 1 || result.count("help") > 0) {
