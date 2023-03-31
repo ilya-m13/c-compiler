@@ -2,15 +2,15 @@
 
 #include <cxxopts.hpp>
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <string>
 
 int main(int argc, char **argv) {
     cxxopts::Options options("c-compiler");
     // clang-format off
     options.add_options()
-        ("file-path", "", cxxopts::value<std::string>())
+        ("file-path", "", cxxopts::value<std::filesystem::path>())
         ("dump-tokens", "")
         ("h,help", "")
     ;
@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    std::ifstream input_stream(result["file-path"].as<std::string>());
+    std::ifstream input_stream(result["file-path"].as<std::filesystem::path>());
     if (!input_stream.good()) {
         std::cerr << "Unable to read stream\n";
         return 1;
