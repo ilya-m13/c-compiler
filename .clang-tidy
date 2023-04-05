@@ -21,8 +21,10 @@ Checks: >
   -cert-err58-cpp,
   -bugprone-easily-swappable-parameters,
   -google-runtime-int,
-  -cppcoreguidelines-non-private-member-variables-in-classes,misc-non-private-member-variables-in-classes,
-  -misc-non-private-member-variables-in-classes
+  -cppcoreguidelines-non-private-member-variables-in-classes,
+  -misc-non-private-member-variables-in-classes,
+  -cppcoreguidelines-special-member-functions,
+  -hicpp-special-member-functions
 WarningsAsErrors: true
 HeaderFilterRegex: '.*/libc/'
 AnalyzeTemporaryDtors: false
