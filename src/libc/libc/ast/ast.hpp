@@ -51,13 +51,21 @@ class HeaderFile final : public Node {
 
 class FunctionDefinition final : public Node {
   public:
-    FunctionDefinition(std::string return_type, std::string id, Childs actions)
-        : return_type_(std::move(return_type)), id_(std::move(id)),
-          actions_(std::move(actions)) {}
+    FunctionDefinition(
+        Node *return_type,
+        std::string id,
+        Childs actions,
+        Childs args_declarations)
+        : return_type_(return_type), id_(std::move(id)),
+          actions_(std::move(actions)),
+          args_declarations_(std::move(args_declarations)) {}
     const Childs &actions() const {
         return actions_;
     }
-    const std::string &return_type() const {
+    const Childs &args_declarations() const {
+        return args_declarations_;
+    }
+    Node *return_type() const {
         return return_type_;
     }
     const std::string &id() const {
@@ -66,10 +74,23 @@ class FunctionDefinition final : public Node {
     void accept(Visitor &visitor) override;
 
   private:
-    std::string return_type_;
+    Node *return_type_;
     std::string id_;
 
     Childs actions_;
+    Childs args_declarations_;
+};
+
+class Expression final : public Node {
+  public:
+    explicit Expression(Node *expression) : expression_(expression) {}
+    Node *expression() const {
+        return expression_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *expression_;
 };
 
 class FunctionCall final : public Node {
@@ -89,28 +110,413 @@ class FunctionCall final : public Node {
     Childs args_;
 };
 
-class Arg final : public Node {
+class VariableWriting final : public Node {
   public:
-    explicit Arg(Node *arg) : arg_(arg) {}
-    Node *arg() const {
-        return arg_;
+    explicit VariableWriting(Node *variable_writing)
+        : variable_writing_(variable_writing) {}
+    Node *variable_writing() const {
+        return variable_writing_;
     }
     void accept(Visitor &visitor) override;
 
   private:
-    Node *arg_;
+    Node *variable_writing_;
+};
+
+class DataDeclaration final : public Node {
+  public:
+    explicit DataDeclaration(Node *data_declaration)
+        : data_declaration_(data_declaration) {}
+    Node *data_declaration() const {
+        return data_declaration_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *data_declaration_;
 };
 
 class ReturnStatement final : public Node {
   public:
-    explicit ReturnStatement(Node *literal) : literal_(literal) {}
-    Node *literal() const {
-        return literal_;
+    explicit ReturnStatement(Node *value) : value_(value) {}
+    Node *value() const {
+        return value_;
     }
     void accept(Visitor &visitor) override;
 
   private:
-    Node *literal_;
+    Node *value_;
+};
+
+class ForStatement final : public Node {
+  public:
+    ForStatement(
+        Node *data_declaration, Node *truth_value, Node *value, Childs actions)
+        : data_declaration_(data_declaration), truth_value_(truth_value),
+          value_(value), actions_(std::move(actions)) {}
+    Node *data_declaration() const {
+        return data_declaration_;
+    }
+    Node *truth_value() const {
+        return truth_value_;
+    }
+    Node *value() const {
+        return value_;
+    }
+    const Childs &actions() const {
+        return actions_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *data_declaration_;
+    Node *truth_value_;
+    Node *value_;
+
+    Childs actions_;
+};
+
+class IfStatement final : public Node {
+  public:
+    IfStatement(Node *truth_value, Childs actions)
+        : truth_value_(truth_value), actions_(std::move(actions)) {}
+    Node *truth_value() const {
+        return truth_value_;
+    }
+    const Childs &actions() const {
+        return actions_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *truth_value_;
+
+    Childs actions_;
+};
+
+class ContinueStatement final : public Node {
+  public:
+    const char *str() const {
+        return "continue";
+    }
+    void accept(Visitor &visitor) override;
+};
+
+class BreakStatement final : public Node {
+  public:
+    const char *str() const {
+        return "break";
+    }
+    void accept(Visitor &visitor) override;
+};
+
+class UninitArray final : public Node {
+  public:
+    UninitArray(Node *sign, Node *type, std::string id, Node *size)
+        : sign_(sign), type_(type), id_(std::move(id)), size_(size) {}
+    Node *sign() const {
+        return sign_;
+    }
+    Node *type() const {
+        return type_;
+    }
+    const std::string &id() const {
+        return id_;
+    }
+    Node *size() const {
+        return size_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *sign_;
+    Node *type_;
+    std::string id_;
+    Node *size_;
+};
+
+class ArrayElementAccess final : public Node {
+  public:
+    ArrayElementAccess(std::string id, Node *idx)
+        : id_(std::move(id)), idx_(idx) {}
+    const std::string &id() const {
+        return id_;
+    }
+    Node *idx() const {
+        return idx_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    std::string id_;
+    Node *idx_;
+};
+
+class InitVariable final : public Node {
+  public:
+    InitVariable(Node *type, std::string id, Node *value)
+        : type_(type), id_(std::move(id)), value_(value) {}
+    Node *type() const {
+        return type_;
+    }
+    const std::string &id() const {
+        return id_;
+    }
+    Node *value() const {
+        return value_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *type_;
+    std::string id_;
+    Node *value_;
+};
+
+class UninitVariable final : public Node {
+  public:
+    UninitVariable(Node *type, std::string id)
+        : type_(type), id_(std::move(id)) {}
+    Node *type() const {
+        return type_;
+    }
+    const std::string &id() const {
+        return id_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *type_;
+    std::string id_;
+};
+
+class Id final : public Node {
+  public:
+    explicit Id(std::string id) : id_(std::move(id)) {}
+    const std::string &id() const {
+        return id_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    std::string id_;
+};
+
+class Assignment final : public Node {
+  public:
+    explicit Assignment(Childs expression)
+        : expression_(std::move(expression)) {}
+    const Childs &expression() const {
+        return expression_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Childs expression_;
+};
+
+class RvalueOperation final : public Node {
+  public:
+    explicit RvalueOperation(Childs expression)
+        : expression_(std::move(expression)) {}
+    const Childs &expression() const {
+        return expression_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    // TODO: вектор чайлдов рассположенных в опн
+    Childs expression_;
+};
+
+class AssignmentOperator final : public Node {
+  public:
+    explicit AssignmentOperator(std::string assign_operator)
+        : assign_operator_(std::move(assign_operator)) {}
+    const std::string &assign_operator() const {
+        return assign_operator_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    std::string assign_operator_;
+};
+
+class ArithmeticOperator final : public Node {
+  public:
+    explicit ArithmeticOperator(std::string arithmetic_operator)
+        : arithmetic_operator_(std::move(arithmetic_operator)) {}
+    const std::string &arithmetic_operator() const {
+        return arithmetic_operator_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    std::string arithmetic_operator_;
+};
+
+class RelationalOperator final : public Node {
+  public:
+    explicit RelationalOperator(std::string relational_operator)
+        : relational_operator_(std::move(relational_operator)) {}
+    const std::string &relational_operator() const {
+        return relational_operator_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    std::string relational_operator_;
+};
+
+class LogicalOperator final : public Node {
+  public:
+    explicit LogicalOperator(std::string logical_operator)
+        : logical_operator_(std::move(logical_operator)) {}
+    const std::string &logical_operator() const {
+        return logical_operator_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    std::string logical_operator_;
+};
+
+class PrefixIncrement final : public Node {
+  public:
+    explicit PrefixIncrement(Node *value) : value_(value) {}
+    Node *value() const {
+        return value_;
+    }
+    const char *increment() const {
+        return "++";
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *value_;
+};
+
+class PostfixIncrement final : public Node {
+  public:
+    explicit PostfixIncrement(Node *value) : value_(value) {}
+    Node *value() const {
+        return value_;
+    }
+    const char *increment() const {
+        return "++";
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *value_;
+};
+
+class PrefixDecrement final : public Node {
+  public:
+    explicit PrefixDecrement(Node *value) : value_(value) {}
+    Node *value() const {
+        return value_;
+    }
+    const char *decrement() const {
+        return "--";
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *value_;
+};
+
+class PostfixDecrement final : public Node {
+  public:
+    explicit PostfixDecrement(Node *value) : value_(value) {}
+    Node *value() const {
+        return value_;
+    }
+    const char *decrement() const {
+        return "--";
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *value_;
+};
+
+class PointerType final : public Node {
+  public:
+    PointerType(bool is_const, Node *sign, Node *type, std::size_t level)
+        : is_const_(is_const), sign_(sign), type_(type), level_(level) {}
+    bool is_const() const {
+        return is_const_;
+    }
+    Node *sign() const {
+        return sign_;
+    }
+    Node *type() const {
+        return type_;
+    }
+    std::size_t level() const {
+        return level_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    bool is_const_;
+    Node *sign_;
+    Node *type_;
+    std::size_t level_;
+};
+
+class DataType final : public Node {
+  public:
+    DataType(bool is_const, Node *sign, Node *type)
+        : is_const_(is_const), sign_(sign), type_(type) {}
+    bool is_const() const {
+        return is_const_;
+    }
+    Node *sign() const {
+        return sign_;
+    }
+    Node *type() const {
+        return type_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    bool is_const_;
+    Node *sign_;
+    Node *type_;
+};
+
+class BaseType final : public Node {
+  public:
+    explicit BaseType(std::string type) : type_(std::move(type)) {}
+    const std::string &type() const {
+        return type_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    std::string type_;
+};
+
+class VoidType final : public Node {
+  public:
+    const char *type() const {
+        return "void";
+    }
+    void accept(Visitor &visitor) override;
+};
+
+class Sign final : public Node {
+  public:
+    explicit Sign(std::string sign) : sign_(std::move(sign)) {}
+    const std::string &sign() const {
+        return sign_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    std::string sign_;
 };
 
 class StringLiteral final : public Node {

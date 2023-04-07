@@ -24,7 +24,9 @@ Checks: >
   -cppcoreguidelines-non-private-member-variables-in-classes,
   -misc-non-private-member-variables-in-classes,
   -cppcoreguidelines-special-member-functions,
-  -hicpp-special-member-functions
+  -hicpp-special-member-functions,
+  -readability-convert-member-functions-to-static,
+  -google-readability-todo
 WarningsAsErrors: true
 HeaderFilterRegex: '.*/libc/'
 AnalyzeTemporaryDtors: false
