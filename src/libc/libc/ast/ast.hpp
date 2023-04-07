@@ -304,29 +304,38 @@ class Id final : public Node {
 
 class Assignment final : public Node {
   public:
-    explicit Assignment(Childs expression)
-        : expression_(std::move(expression)) {}
+    Assignment(Childs expression, Childs rpn)
+        : expression_(std::move(expression)), rpn_(std::move(rpn)) {}
     const Childs &expression() const {
         return expression_;
+    }
+    const Childs &rpn() const {
+        return rpn_;
     }
     void accept(Visitor &visitor) override;
 
   private:
     Childs expression_;
+    // Reverse Polish notation
+    Childs rpn_;
 };
 
 class RvalueOperation final : public Node {
   public:
-    explicit RvalueOperation(Childs expression)
-        : expression_(std::move(expression)) {}
+    RvalueOperation(Childs expression, Childs rpn)
+        : expression_(std::move(expression)), rpn_(std::move(rpn)) {}
     const Childs &expression() const {
         return expression_;
+    }
+    const Childs &rpn() const {
+        return rpn_;
     }
     void accept(Visitor &visitor) override;
 
   private:
-    // TODO: вектор чайлдов рассположенных в опн
     Childs expression_;
+    // Reverse Polish notation
+    Childs rpn_;
 };
 
 class AssignmentOperator final : public Node {

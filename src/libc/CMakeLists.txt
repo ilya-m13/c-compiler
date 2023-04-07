@@ -24,7 +24,9 @@ target_sources(
         libc/ast/ast.cpp
         libc/ast/xml_serializer.cpp
         libc/ast/detail/builder.cpp
+        libc/ast/detail/precedence_builder.cpp
         libc/ast/detail/builder.hpp
+        libc/ast/detail/precedence_builder.hpp
 )
 
 target_link_libraries(

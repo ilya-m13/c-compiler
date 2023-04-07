@@ -166,13 +166,19 @@ void XmlSerializer::visit(Id &node) {
 }
 
 void XmlSerializer::visit(Assignment &node) {
-    for (auto *child : node.expression()) {
+    // for (auto *child : node.expression()) {
+    //     child->accept(*this);
+    // }
+    for (auto *child : node.rpn()) {
         child->accept(*this);
     }
 }
 
 void XmlSerializer::visit(RvalueOperation &node) {
-    for (auto *child : node.expression()) {
+    // for (auto *child : node.expression()) {
+    //     child->accept(*this);
+    // }
+    for (auto *child : node.rpn()) {
         child->accept(*this);
     }
 }

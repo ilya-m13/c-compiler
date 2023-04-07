@@ -1,4 +1,5 @@
 #include <libc/ast/detail/builder.hpp>
+#include <libc/ast/detail/precedence_builder.hpp>
 
 namespace c::ast::detail {
 
@@ -169,7 +170,10 @@ std::any Builder::visitAssignment(CParser::AssignmentContext *context) {
         expression.push_back(std::any_cast<Node *>(visit(child)));
     }
 
-    return static_cast<Node *>(program_.create_node<Assignment>(expression));
+    Childs rpn = PrecedenceBuilder::exec(expression);
+
+    return static_cast<Node *>(
+        program_.create_node<Assignment>(expression, rpn));
 }
 
 std::any
@@ -179,8 +183,10 @@ Builder::visitRvalue_operation(CParser::Rvalue_operationContext *context) {
         expression.push_back(std::any_cast<Node *>(visit(child)));
     }
 
+    Childs rpn = PrecedenceBuilder::exec(expression);
+
     return static_cast<Node *>(
-        program_.create_node<RvalueOperation>(expression));
+        program_.create_node<RvalueOperation>(expression, rpn));
 }
 
 std::any Builder::visitAssignment_operator(
