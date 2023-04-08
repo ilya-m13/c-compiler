@@ -31,6 +31,7 @@ return_type
     : data_type
     | pointer_type
     | struct_type
+    | void_type
     ;
 
 action

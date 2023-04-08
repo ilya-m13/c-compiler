@@ -21,7 +21,7 @@ endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
 
-enable_testing()
+configure_file(test/libc/libc/source_dir.hpp.in test/libc/libc/source_dir.hpp)
 
 add_subdirectory(external)
 add_subdirectory(src)

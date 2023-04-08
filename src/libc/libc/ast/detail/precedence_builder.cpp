@@ -131,7 +131,7 @@ void PrecedenceBuilder::visit(IntegerLiteral &node) {
 void PrecedenceBuilder::handle_operator(const OperatorData &operator_data) {
     if (!operator_data_.empty()) {
         while (
-            operator_data_.top().precedence_ <= operator_data.precedence_ ||
+            operator_data_.top().precedence_ < operator_data.precedence_ ||
             (operator_data_.top().is_left_associativity_ &&
              operator_data_.top().precedence_ == operator_data.precedence_)) {
             rpn_.push_back(operator_data_.top().operator_node_);
