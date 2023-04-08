@@ -8,7 +8,7 @@ void XmlSerializer::exec(Program &program, std::ostream &out) {
     for (auto *child : program.get_childs()) {
         child->accept(xml_serializer);
     }
-    xml_serializer.doc_.save(out);
+    xml_serializer.doc_.save(out, "  ");
 }
 
 void XmlSerializer::visit(HeaderFile &node) {
