@@ -81,6 +81,8 @@ class FunctionDefinition final : public Node {
     Childs args_declarations_;
 };
 
+// Expressions
+
 class Expression final : public Node {
   public:
     explicit Expression(Node *expression) : expression_(expression) {}
@@ -123,18 +125,19 @@ class VariableWriting final : public Node {
     Node *variable_writing_;
 };
 
-class DataDeclaration final : public Node {
+class DataCreate final : public Node {
   public:
-    explicit DataDeclaration(Node *data_declaration)
-        : data_declaration_(data_declaration) {}
-    Node *data_declaration() const {
-        return data_declaration_;
+    explicit DataCreate(Node *data_create) : data_create_(data_create) {}
+    Node *data_create() const {
+        return data_create_;
     }
     void accept(Visitor &visitor) override;
 
   private:
-    Node *data_declaration_;
+    Node *data_create_;
 };
+
+// Statements
 
 class ReturnStatement final : public Node {
   public:
@@ -151,11 +154,11 @@ class ReturnStatement final : public Node {
 class ForStatement final : public Node {
   public:
     ForStatement(
-        Node *data_declaration, Node *truth_value, Node *value, Childs actions)
-        : data_declaration_(data_declaration), truth_value_(truth_value),
+        Node *for_data_using, Node *truth_value, Node *value, Childs actions)
+        : for_data_using_(for_data_using), truth_value_(truth_value),
           value_(value), actions_(std::move(actions)) {}
-    Node *data_declaration() const {
-        return data_declaration_;
+    Node *for_data_using() const {
+        return for_data_using_;
     }
     Node *truth_value() const {
         return truth_value_;
@@ -169,7 +172,7 @@ class ForStatement final : public Node {
     void accept(Visitor &visitor) override;
 
   private:
-    Node *data_declaration_;
+    Node *for_data_using_;
     Node *truth_value_;
     Node *value_;
 
@@ -210,9 +213,139 @@ class BreakStatement final : public Node {
     void accept(Visitor &visitor) override;
 };
 
-class UninitArray final : public Node {
+// Struct
+
+class StructDeclaration final : public Node {
   public:
-    UninitArray(Node *sign, Node *type, std::string id, Node *size)
+    StructDeclaration(bool is_typedef, std::string id)
+        : is_typedef_(is_typedef), id_(std::move(id)) {}
+    bool is_typedef() const {
+        return is_typedef_;
+    }
+    const std::string &id() const {
+        return id_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    bool is_typedef_;
+    std::string id_;
+};
+
+class StructDefinition final : public Node {
+  public:
+    StructDefinition(
+        bool is_typedef, std::string id, std::string object, Childs data_uninit)
+        : is_typedef_(is_typedef), id_(std::move(id)),
+          object_(std::move(object)), data_uninit_(std::move(data_uninit)) {}
+    bool is_typedef() const {
+        return is_typedef_;
+    }
+    const std::string &id() const {
+        return id_;
+    }
+    const std::string &object() const {
+        return object_;
+    }
+    const Childs &data_uninit() const {
+        return data_uninit_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    bool is_typedef_;
+    std::string id_;
+    std::string object_;
+    Childs data_uninit_;
+};
+
+class StructInit final : public Node {
+  public:
+    StructInit(Node *struct_type, std::string id, Childs values)
+        : struct_type_(struct_type), id_(std::move(id)),
+          values_(std::move(values)) {}
+    Node *struct_type() const {
+        return struct_type_;
+    }
+    const std::string &id() const {
+        return id_;
+    }
+    const Childs &values() const {
+        return values_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *struct_type_;
+    std::string id_;
+    Childs values_;
+};
+
+class StructUninit final : public Node {
+  public:
+    StructUninit(Node *struct_type, std::string id)
+        : struct_type_(struct_type), id_(std::move(id)) {}
+    Node *struct_type() const {
+        return struct_type_;
+    }
+    const std::string &id() const {
+        return id_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Node *struct_type_;
+    std::string id_;
+};
+
+class StructElementAccess final : public Node {
+  public:
+    explicit StructElementAccess(Childs lvalue_refer_stream)
+        : lvalue_refer_stream_(std::move(lvalue_refer_stream)) {}
+    const Childs &lvalue_refer_stream() const {
+        return lvalue_refer_stream_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Childs lvalue_refer_stream_;
+};
+
+class StructType final : public Node {
+  public:
+    StructType(bool is_const, std::string id)
+        : is_const_(is_const), id_(std::move(id)) {}
+    bool is_const() const {
+        return is_const_;
+    }
+    const std::string &id() const {
+        return id_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    bool is_const_;
+    std::string id_;
+};
+
+class StructElementRefer final : public Node {
+  public:
+    explicit StructElementRefer(std::string element_refer)
+        : element_refer_(std::move(element_refer)) {}
+    const std::string &element_refer() const {
+        return element_refer_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    std::string element_refer_;
+};
+
+// Array
+
+class ArrayUninit final : public Node {
+  public:
+    ArrayUninit(Node *sign, Node *type, std::string id, Node *size)
         : sign_(sign), type_(type), id_(std::move(id)), size_(size) {}
     Node *sign() const {
         return sign_;
@@ -252,9 +385,11 @@ class ArrayElementAccess final : public Node {
     Node *idx_;
 };
 
-class InitVariable final : public Node {
+// Variable
+
+class VariableInit final : public Node {
   public:
-    InitVariable(Node *type, std::string id, Node *value)
+    VariableInit(Node *type, std::string id, Node *value)
         : type_(type), id_(std::move(id)), value_(value) {}
     Node *type() const {
         return type_;
@@ -273,9 +408,9 @@ class InitVariable final : public Node {
     Node *value_;
 };
 
-class UninitVariable final : public Node {
+class VariableUninit final : public Node {
   public:
-    UninitVariable(Node *type, std::string id)
+    VariableUninit(Node *type, std::string id)
         : type_(type), id_(std::move(id)) {}
     Node *type() const {
         return type_;
@@ -290,9 +425,9 @@ class UninitVariable final : public Node {
     std::string id_;
 };
 
-class Id final : public Node {
+class VariableAccess final : public Node {
   public:
-    explicit Id(std::string id) : id_(std::move(id)) {}
+    explicit VariableAccess(std::string id) : id_(std::move(id)) {}
     const std::string &id() const {
         return id_;
     }
@@ -301,6 +436,8 @@ class Id final : public Node {
   private:
     std::string id_;
 };
+
+// Operations
 
 class Assignment final : public Node {
   public:
@@ -450,6 +587,8 @@ class PostfixDecrement final : public Node {
     Node *value_;
 };
 
+// Types
+
 class PointerType final : public Node {
   public:
     PointerType(bool is_const, Node *sign, Node *type, std::size_t level)
@@ -527,6 +666,8 @@ class Sign final : public Node {
   private:
     std::string sign_;
 };
+
+// Literals
 
 class StringLiteral final : public Node {
   public:

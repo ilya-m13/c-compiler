@@ -79,8 +79,8 @@ MODULO_ASSIGN: '%=';
 INCREMENT: '++';
 DECREMENT: '--';
 
-COMMENT_NEWLINE: '/*' (.)*? '*/';
-COMMENT: '//' (.)*? '\n';
+COMMENT_NEWLINE: '/*' (.)*? '*/' -> channel(HIDDEN);
+COMMENT: '//' (.)*? '\n' -> channel(HIDDEN);
 
 ID: ('_' | CHARACTER) (CHARACTER | DIGIT | '_')*;
 

@@ -9,6 +9,7 @@ struct Operators {
     bool is_left_associativity_ = false;
 };
 
+// Operators are ordered from highest precedence to lowest
 const std::vector<Operators> precedence = {
     {{"*", "/", "%"}, true},
     {{"+", "-"}, true},
@@ -111,7 +112,11 @@ void PrecedenceBuilder::visit(ArrayElementAccess &node) {
     rpn_.push_back(&node);
 }
 
-void PrecedenceBuilder::visit(Id &node) {
+void PrecedenceBuilder::visit(StructElementAccess &node) {
+    rpn_.push_back(&node);
+}
+
+void PrecedenceBuilder::visit(VariableAccess &node) {
     rpn_.push_back(&node);
 }
 

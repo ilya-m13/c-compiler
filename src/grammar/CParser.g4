@@ -13,6 +13,8 @@ program
 element
     : header_file
     | function_definition
+    | struct_declaration
+    | struct_definition
     ;
 
 header_file
@@ -25,6 +27,12 @@ function_definition
         LBRACE action* RBRACE
     ;
 
+return_type
+    : data_type
+    | pointer_type
+    | struct_type
+    ;
+
 action
     : expression
     | statement
@@ -35,7 +43,7 @@ action
 expression
     : function_call SEMICOLON
     | variable_writing SEMICOLON
-    | data_declaration SEMICOLON
+    | data_create SEMICOLON
     ;
 
 function_call
@@ -49,9 +57,10 @@ variable_writing
     | decrement
     ;
 
-data_declaration
-    : variable_declaration
-    | array_declaration
+data_create
+    : variable_create
+    | array_create
+    | struct_create
     ;
 
 // statements
@@ -69,8 +78,13 @@ return_statement
     ;
 
 for_statement
-    : FOR OPENPAR data_declaration? SEMICOLON truth_value? SEMICOLON value? 
+    : FOR OPENPAR for_data_using? SEMICOLON truth_value? SEMICOLON value? 
         CLOSEPAR LBRACE action* RBRACE
+    ;
+
+for_data_using
+    : data_create
+    | variable_writing
     ;
 
 if_statement
@@ -103,8 +117,9 @@ rvalue_expression
     ;
 
 lvalue
-    : id
+    : variable_access
     | array_element_access
+    | struct_element_access
     ;
 
 rvalue
@@ -114,14 +129,65 @@ rvalue
     | decrement
     ;
 
-// array
+// object
 
-// TODO: init_array (size is rvalue without lvalue)
-array_declaration
-    : uninit_array
+data_uninit
+    : variable_uninit
+    | array_uninit
+    | struct_uninit
     ;
 
-uninit_array
+// struct
+
+struct_declaration
+    : STRUCT ID SEMICOLON
+    | TYPEDEF STRUCT ID ID SEMICOLON
+    ;
+
+struct_definition
+    : TYPEDEF STRUCT LBRACE (data_uninit SEMICOLON)+ RBRACE ID SEMICOLON
+    | STRUCT ID LBRACE (data_uninit SEMICOLON)+ RBRACE ID? SEMICOLON
+    ;
+
+struct_create
+    : struct_uninit
+    | struct_init
+    ;
+
+struct_init
+    : struct_type ID ASSIGN LBRACE value (COMMA value)* RBRACE
+    ;
+
+struct_uninit
+    : struct_type ID
+    ;
+
+struct_element_access
+    : struct_lvalue (struct_element_refer struct_lvalue)+
+    ;
+
+struct_type
+    : CONST? STRUCT? ID
+    ;
+
+struct_lvalue
+    : variable_access
+    | array_element_access
+    ;
+
+struct_element_refer
+    : PERIOD
+    ;
+
+// array
+
+array_create
+    : array_uninit
+    ;
+
+// TODO: array_init (size is rvalue without lvalue)
+
+array_uninit
     : sign? base_type ID LBRACKET value RBRACKET
     ;
 
@@ -131,20 +197,25 @@ array_element_access
 
 // variable 
 
-variable_declaration
-    : init_variable
-    | uninit_variable
+variable_create
+    : variable_init
+    | variable_uninit
     ;
 
-init_variable
-    : (data_type | pointer_type) ID ASSIGN value
+variable_init
+    : variable_type ID ASSIGN value
     ;
 
-uninit_variable
-    : (data_type | pointer_type) ID
+variable_uninit
+    : variable_type ID
     ;
 
-id
+variable_type
+    : data_type
+    | pointer_type
+    ;
+
+variable_access
     : ID
     ;
 
@@ -225,22 +296,18 @@ postfix_decrement
 
 // types
 
-return_type
-    : data_type
-    | pointer_type
-    ;
-
 pointer_type
     : CONST? sign? any_type MULTIP MULTIP*
-    ;
-
-data_type
-    : CONST? sign? base_type
     ;
 
 any_type
     : base_type
     | void_type
+    | struct_type
+    ;
+
+data_type
+    : CONST? sign? base_type
     ;
 
 base_type
@@ -279,7 +346,7 @@ integer_literal
 // args
 
 arg_declaration
-    : uninit_variable
+    : data_uninit
     ;
 
 arg

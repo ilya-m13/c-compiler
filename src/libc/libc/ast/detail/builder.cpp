@@ -45,6 +45,8 @@ std::any Builder::visitFunction_definition(
         return_type, id, actions, args_declarations));
 }
 
+// Expressions
+
 std::any Builder::visitExpression(CParser::ExpressionContext *context) {
     auto *expression = std::any_cast<Node *>(visit(context->children[0]));
     return static_cast<Node *>(program_.create_node<Expression>(expression));
@@ -68,13 +70,13 @@ Builder::visitVariable_writing(CParser::Variable_writingContext *context) {
     return static_cast<Node *>(
         program_.create_node<VariableWriting>(variable_writing));
 }
-std::any
-Builder::visitData_declaration(CParser::Data_declarationContext *context) {
-    auto *data_declaration = std::any_cast<Node *>(visit(context->children[0]));
+std::any Builder::visitData_create(CParser::Data_createContext *context) {
+    auto *data_create = std::any_cast<Node *>(visit(context->children[0]));
 
-    return static_cast<Node *>(
-        program_.create_node<DataDeclaration>(data_declaration));
+    return static_cast<Node *>(program_.create_node<DataCreate>(data_create));
 }
+
+// Statements
 
 std::any
 Builder::visitReturn_statement(CParser::Return_statementContext *context) {
@@ -83,10 +85,21 @@ Builder::visitReturn_statement(CParser::Return_statementContext *context) {
 }
 
 std::any Builder::visitFor_statement(CParser::For_statementContext *context) {
-    auto *data_declaration =
-        std::any_cast<Node *>(visit(context->data_declaration()));
-    auto *truth_value = std::any_cast<Node *>(visit(context->truth_value()));
-    auto *value = std::any_cast<Node *>(visit(context->value()));
+    Node *for_data_using = nullptr;
+    if (context->for_data_using() != nullptr) {
+        for_data_using =
+            std::any_cast<Node *>(visit(context->for_data_using()));
+    }
+
+    Node *truth_value = nullptr;
+    if (context->truth_value() != nullptr) {
+        truth_value = std::any_cast<Node *>(visit(context->truth_value()));
+    }
+
+    Node *value = nullptr;
+    if (context->value() != nullptr) {
+        value = std::any_cast<Node *>(visit(context->value()));
+    }
 
     Childs actions;
     for (auto *action : context->action()) {
@@ -94,7 +107,7 @@ std::any Builder::visitFor_statement(CParser::For_statementContext *context) {
     }
 
     return static_cast<Node *>(program_.create_node<ForStatement>(
-        data_declaration, truth_value, value, actions));
+        for_data_using, truth_value, value, actions));
 }
 
 std::any Builder::visitIf_statement(CParser::If_statementContext *context) {
@@ -119,7 +132,84 @@ Builder::visitBreak_statement(CParser::Break_statementContext * /*context*/) {
     return static_cast<Node *>(program_.create_node<BreakStatement>());
 }
 
-std::any Builder::visitUninit_array(CParser::Uninit_arrayContext *context) {
+// Struct
+
+// TODO: equal ID[0] with ID[1]
+std::any
+Builder::visitStruct_declaration(CParser::Struct_declarationContext *context) {
+    bool is_typedef = static_cast<bool>(context->TYPEDEF());
+    auto id = context->ID()[0]->getText();
+
+    return static_cast<Node *>(
+        program_.create_node<StructDeclaration>(is_typedef, id));
+}
+
+std::any
+Builder::visitStruct_definition(CParser::Struct_definitionContext *context) {
+    bool is_typedef = static_cast<bool>(context->TYPEDEF());
+    auto id = context->ID()[0]->getText();
+    std::string object;
+    if (context->ID().size() != 1) {
+        object = context->ID()[1]->getText();
+    }
+    Childs data_uninit;
+    for (auto *child : context->data_uninit()) {
+        data_uninit.push_back(std::any_cast<Node *>(visit(child)));
+    }
+
+    return static_cast<Node *>(program_.create_node<StructDefinition>(
+        is_typedef, id, object, data_uninit));
+}
+
+std::any Builder::visitStruct_init(CParser::Struct_initContext *context) {
+    auto *struct_type = std::any_cast<Node *>(visit(context->struct_type()));
+    auto id = context->ID()->getText();
+    Childs values;
+    for (auto *value : context->value()) {
+        values.push_back(std::any_cast<Node *>(visit(value)));
+    }
+
+    return static_cast<Node *>(
+        program_.create_node<StructInit>(struct_type, id, values));
+}
+
+std::any Builder::visitStruct_uninit(CParser::Struct_uninitContext *context) {
+    auto *struct_type = std::any_cast<Node *>(visit(context->struct_type()));
+    auto id = context->ID()->getText();
+
+    return static_cast<Node *>(
+        program_.create_node<StructUninit>(struct_type, id));
+}
+
+std::any Builder::visitStruct_element_access(
+    CParser::Struct_element_accessContext *context) {
+    Childs lvalue_refer_stream;
+    for (auto *child : context->children) {
+        lvalue_refer_stream.push_back(std::any_cast<Node *>(visit(child)));
+    }
+
+    return static_cast<Node *>(
+        program_.create_node<StructElementAccess>(lvalue_refer_stream));
+}
+
+std::any Builder::visitStruct_type(CParser::Struct_typeContext *context) {
+    bool is_const = static_cast<bool>(context->CONST());
+    auto id = context->ID()->getText();
+
+    return static_cast<Node *>(program_.create_node<StructType>(is_const, id));
+}
+
+std::any Builder::visitStruct_element_refer(
+    CParser::Struct_element_referContext *context) {
+    auto element_refer = context->children[0]->getText();
+
+    return static_cast<Node *>(
+        program_.create_node<StructElementRefer>(element_refer));
+}
+
+// Array
+
+std::any Builder::visitArray_uninit(CParser::Array_uninitContext *context) {
     Node *sign = nullptr;
     if (context->sign() != nullptr) {
         sign = std::any_cast<Node *>(visit(context->sign()));
@@ -129,7 +219,7 @@ std::any Builder::visitUninit_array(CParser::Uninit_arrayContext *context) {
     auto *size = std::any_cast<Node *>(visit(context->value()));
 
     return static_cast<Node *>(
-        program_.create_node<UninitArray>(sign, type, id, size));
+        program_.create_node<ArrayUninit>(sign, type, id, size));
 }
 
 std::any Builder::visitArray_element_access(
@@ -141,28 +231,33 @@ std::any Builder::visitArray_element_access(
         program_.create_node<ArrayElementAccess>(id, idx));
 }
 
-std::any Builder::visitInit_variable(CParser::Init_variableContext *context) {
-    auto *type = std::any_cast<Node *>(visit(context->children[0]));
+// Variable
+
+std::any Builder::visitVariable_init(CParser::Variable_initContext *context) {
+    auto *type = std::any_cast<Node *>(visit(context->variable_type()));
     auto id = context->ID()->getText();
     auto *value = std::any_cast<Node *>(visit(context->value()));
 
     return static_cast<Node *>(
-        program_.create_node<InitVariable>(type, id, value));
+        program_.create_node<VariableInit>(type, id, value));
 }
 
 std::any
-Builder::visitUninit_variable(CParser::Uninit_variableContext *context) {
-    auto *type = std::any_cast<Node *>(visit(context->children[0]));
+Builder::visitVariable_uninit(CParser::Variable_uninitContext *context) {
+    auto *type = std::any_cast<Node *>(visit(context->variable_type()));
     auto id = context->ID()->getText();
 
-    return static_cast<Node *>(program_.create_node<UninitVariable>(type, id));
+    return static_cast<Node *>(program_.create_node<VariableUninit>(type, id));
 }
 
-std::any Builder::visitId(CParser::IdContext *context) {
+std::any
+Builder::visitVariable_access(CParser::Variable_accessContext *context) {
     auto id = context->ID()->getText();
 
-    return static_cast<Node *>(program_.create_node<Id>(id));
+    return static_cast<Node *>(program_.create_node<VariableAccess>(id));
 }
+
+// Operations
 
 std::any Builder::visitAssignment(CParser::AssignmentContext *context) {
     Childs expression;
@@ -249,6 +344,8 @@ Builder::visitPostfix_decrement(CParser::Postfix_decrementContext *context) {
     return static_cast<Node *>(program_.create_node<PostfixDecrement>(value));
 }
 
+// Types
+
 std::any Builder::visitPointer_type(CParser::Pointer_typeContext *context) {
     bool is_const = static_cast<bool>(context->CONST());
     Node *sign = nullptr;
@@ -289,6 +386,8 @@ std::any Builder::visitSign(CParser::SignContext *context) {
 
     return static_cast<Node *>(program_.create_node<Sign>(sign));
 }
+
+// Literals
 
 std::any Builder::visitString_literal(CParser::String_literalContext *context) {
     const auto string = trim_quotes(context->STRING()->getText());

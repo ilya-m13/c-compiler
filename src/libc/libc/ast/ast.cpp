@@ -11,6 +11,8 @@ void FunctionDefinition::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
+// Expressions
+
 void Expression::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
@@ -23,9 +25,11 @@ void VariableWriting::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
-void DataDeclaration::accept(Visitor &visitor) {
+void DataCreate::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
+
+// Statements
 
 void ReturnStatement::accept(Visitor &visitor) {
     visitor.visit(*this);
@@ -47,7 +51,39 @@ void BreakStatement::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
-void UninitArray::accept(Visitor &visitor) {
+// Struct
+
+void StructDeclaration::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
+void StructDefinition::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
+void StructInit::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
+void StructUninit::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
+void StructElementAccess::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
+void StructType::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
+void StructElementRefer::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
+// Array
+
+void ArrayUninit::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
@@ -55,17 +91,21 @@ void ArrayElementAccess::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
-void InitVariable::accept(Visitor &visitor) {
+// Variable
+
+void VariableInit::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
-void UninitVariable::accept(Visitor &visitor) {
+void VariableUninit::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
-void Id::accept(Visitor &visitor) {
+void VariableAccess::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
+
+// Operations
 
 void Assignment::accept(Visitor &visitor) {
     visitor.visit(*this);
@@ -107,6 +147,8 @@ void PostfixDecrement::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
+// Types
+
 void PointerType::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
@@ -126,6 +168,8 @@ void VoidType::accept(Visitor &visitor) {
 void Sign::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
+
+// Literals
 
 void StringLiteral::accept(Visitor &visitor) {
     visitor.visit(*this);

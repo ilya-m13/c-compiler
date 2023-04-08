@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    for (size_t i = 0; i < str.len_; ++i) {
+    for (unsigned long i = 0; i < str.len_; ++i) {
         if (str.str_[i] == substr.str_[0]) {
             int equal_len_substr = 1;
             for (; equal_len_substr < substr.len_; ++equal_len_substr) {
