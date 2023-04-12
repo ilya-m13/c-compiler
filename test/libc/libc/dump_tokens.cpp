@@ -1,4 +1,4 @@
-#include "dump_tokens.hpp"
+#include "dump_tokens.test.hpp"
 
 #include <libc/dump_tokens.hpp>
 
