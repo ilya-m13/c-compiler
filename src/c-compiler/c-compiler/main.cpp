@@ -1,4 +1,5 @@
 #include <libc/dump_tokens.hpp>
+#include <libc/parser.hpp>
 
 #include <cxxopts.hpp>
 
@@ -8,13 +9,16 @@
 
 int main(int argc, char **argv) {
     cxxopts::Options options("c-compiler");
+    options.positional_help("<file-path>");
     // clang-format off
     options.add_options()
         ("file-path", "", cxxopts::value<std::filesystem::path>())
         ("dump-tokens", "")
+        ("dump-ast", "")
         ("h,help", "")
     ;
     // clang-format on
+    options.parse_positional({"file-path"});
     const auto result = options.parse(argc, argv);
 
     if (result.count("file-path") != 1 || result.count("help") > 0) {
@@ -30,6 +34,13 @@ int main(int argc, char **argv) {
 
     if (result.count("dump-tokens") > 0) {
         c::dump_tokens(input_stream, std::cout);
+    } else if (result.count("dump-ast") > 0) {
+        auto parser_result = c::parse(input_stream);
+        if (!parser_result.errors_.empty()) {
+            c::dump_errors(parser_result.errors_, std::cerr);
+        } else {
+            c::dump_ast(parser_result.program_, std::cout);
+        }
     }
 
     return 0;

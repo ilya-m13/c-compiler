@@ -8,7 +8,7 @@ set_compile_options(${app_name})
 target_sources(
     ${app_name}
     PRIVATE
-    ${app_name}/main.cpp
+        ${app_name}/main.cpp
 )
 
 target_link_libraries(
