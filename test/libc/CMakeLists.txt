@@ -15,8 +15,8 @@ target_include_directories(
 target_sources(
     ${test_name}
     PRIVATE
-        libc/dump_tokens.test.cpp
-        libc/parser.test.cpp
+        libc/dump_tokens.cpp
+        libc/parser.cpp
 )
 target_link_libraries(
     ${test_name}
