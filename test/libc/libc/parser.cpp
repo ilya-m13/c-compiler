@@ -91,11 +91,7 @@ TEST(ParserTest, InvalidFunctionDefinition) {
 
 TEST(ParserTest, InvalidStructDeclaration) {
     std::vector<std::string> strings = {
-        "strct Struct;",
-        "typedef Strct Struct Struct;",
-        "tpdf struct Struct Struct;",
-        "int main() {struct return;}",
-        "struct return;"};
+        "strct Struct;", "int main() {struct return;}", "struct return;"};
     std::vector<c::ParseResult> results(strings.size());
     std::stringstream sstream;
 
@@ -113,9 +109,6 @@ TEST(ParserTest, InvalidStructDefinition) {
         "struct Struct {member1; member2};",
         "struct Struct {int member1; int member2 = 0};",
         "struct Struct {struct Struct {int member;};};",
-        "typedef struct Struct {member1; member2};",
-        "typedef struct Struct {int member1; int member2 = 0};",
-        "typedef struct Struct {struct Struct {int member;};};",
         "int main() {struct Struct {int member};}",
         "struct Struct {int return;};"};
     std::vector<c::ParseResult> results(strings.size());

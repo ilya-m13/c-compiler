@@ -137,16 +137,13 @@ Builder::visitBreak_statement(CParser::Break_statementContext * /*context*/) {
 // TODO: equal ID[0] with ID[1]
 std::any
 Builder::visitStruct_declaration(CParser::Struct_declarationContext *context) {
-    bool is_typedef = static_cast<bool>(context->TYPEDEF());
-    auto id = context->ID()[0]->getText();
+    auto id = context->ID()->getText();
 
-    return static_cast<Node *>(
-        program_.create_node<StructDeclaration>(is_typedef, id));
+    return static_cast<Node *>(program_.create_node<StructDeclaration>(id));
 }
 
 std::any
 Builder::visitStruct_definition(CParser::Struct_definitionContext *context) {
-    bool is_typedef = static_cast<bool>(context->TYPEDEF());
     auto id = context->ID()[0]->getText();
     std::string object;
     if (context->ID().size() != 1) {
@@ -157,8 +154,8 @@ Builder::visitStruct_definition(CParser::Struct_definitionContext *context) {
         data_uninit.push_back(std::any_cast<Node *>(visit(child)));
     }
 
-    return static_cast<Node *>(program_.create_node<StructDefinition>(
-        is_typedef, id, object, data_uninit));
+    return static_cast<Node *>(
+        program_.create_node<StructDefinition>(id, object, data_uninit));
 }
 
 std::any Builder::visitStruct_init(CParser::Struct_initContext *context) {

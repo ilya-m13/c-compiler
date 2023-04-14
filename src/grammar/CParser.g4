@@ -142,12 +142,10 @@ data_uninit
 
 struct_declaration
     : STRUCT ID SEMICOLON
-    | TYPEDEF STRUCT ID ID SEMICOLON
     ;
 
 struct_definition
-    : TYPEDEF STRUCT LBRACE (data_uninit SEMICOLON)+ RBRACE ID SEMICOLON
-    | STRUCT ID LBRACE (data_uninit SEMICOLON)+ RBRACE ID? SEMICOLON
+    : STRUCT ID LBRACE (data_uninit SEMICOLON)+ RBRACE ID? SEMICOLON
     ;
 
 struct_create
@@ -168,7 +166,7 @@ struct_element_access
     ;
 
 struct_type
-    : CONST? STRUCT? ID
+    : CONST? STRUCT ID
     ;
 
 struct_lvalue

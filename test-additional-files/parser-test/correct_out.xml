@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <Program>
   <header-file>header.h</header-file>
-  <struct-declaration name="struct-Struct" />
   <struct-declaration name="Struct" />
   <struct-definition name="Struct">
     <member type="int" name="data_" />
@@ -9,10 +8,10 @@
     <member type="Struct" name="data_" />
     <member type="Struct" level="**" name="data_" />
   </struct-definition>
-  <struct-definition name="struct-Struct">
+  <struct-definition name="Struct">
     <member type="int" name="data_" />
   </struct-definition>
-  <struct-definition name="struct-Struct" object="object">
+  <struct-definition name="Struct" object="object">
     <member type="int" name="data_" />
   </struct-definition>
   <function type="int" name="id">

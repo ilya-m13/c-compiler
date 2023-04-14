@@ -217,30 +217,21 @@ class BreakStatement final : public Node {
 
 class StructDeclaration final : public Node {
   public:
-    StructDeclaration(bool is_typedef, std::string id)
-        : is_typedef_(is_typedef), id_(std::move(id)) {}
-    bool is_typedef() const {
-        return is_typedef_;
-    }
+    explicit StructDeclaration(std::string id) : id_(std::move(id)) {}
     const std::string &id() const {
         return id_;
     }
     void accept(Visitor &visitor) override;
 
   private:
-    bool is_typedef_;
     std::string id_;
 };
 
 class StructDefinition final : public Node {
   public:
-    StructDefinition(
-        bool is_typedef, std::string id, std::string object, Childs data_uninit)
-        : is_typedef_(is_typedef), id_(std::move(id)),
-          object_(std::move(object)), data_uninit_(std::move(data_uninit)) {}
-    bool is_typedef() const {
-        return is_typedef_;
-    }
+    StructDefinition(std::string id, std::string object, Childs data_uninit)
+        : id_(std::move(id)), object_(std::move(object)),
+          data_uninit_(std::move(data_uninit)) {}
     const std::string &id() const {
         return id_;
     }
@@ -253,7 +244,6 @@ class StructDefinition final : public Node {
     void accept(Visitor &visitor) override;
 
   private:
-    bool is_typedef_;
     std::string id_;
     std::string object_;
     Childs data_uninit_;

@@ -1,13 +1,12 @@
 #include <header.h>
 
 struct Struct;
-typedef struct Struct Struct;
-typedef struct {
+struct Struct {
     int data_;
     int **data_;
-    Struct data_;
+    struct Struct data_;
     struct Struct **data_;
-} Struct;
+};
 struct Struct {
     int data_;
 };
@@ -17,9 +16,10 @@ struct Struct {
 
 int id() {}
 int *id(int arg1) {}
-void id(int arg1, int *arg2, Struct arg3, struct Struct arg4, void *arg5) {}
+void id(
+    int arg1, int *arg2, struct Struct arg3, struct Struct arg4, void *arg5) {}
 void *id() {}
-Struct id() {}
+struct Struct id() {}
 struct Struct *id() {}
 
 int main() {
@@ -81,9 +81,9 @@ int main() {
     int array_[var_];
     unsigned char array_[var_ = var_ * 1];
 
-    Struct var_ = {var_ + 1, var_ = var_ * 1};
+    struct Struct var_ = {var_ + 1, var_ = var_ * 1};
     struct Struct var_;
-    Struct *p = var_ + 1;
+    struct Struct *p = var_ + 1;
 
     return var_ + 1;
 

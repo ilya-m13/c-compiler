@@ -139,11 +139,7 @@ void XmlSerializer::visit(BreakStatement & /*node*/) {
 void XmlSerializer::visit(StructDeclaration &node) {
     auto struct_declaration_node = append_child("struct-declaration");
     nodes_.push(struct_declaration_node);
-    if (node.is_typedef()) {
-        append_attribute("name", node.id().c_str());
-    } else {
-        append_attribute("name", ("struct-" + node.id()).c_str());
-    }
+    append_attribute("name", (node.id()).c_str());
     nodes_.pop();
 }
 
@@ -151,11 +147,7 @@ void XmlSerializer::visit(StructDefinition &node) {
     auto struct_definition_node = append_child("struct-definition");
     nodes_.push(struct_definition_node);
 
-    if (node.is_typedef()) {
-        append_attribute("name", node.id().c_str());
-    } else {
-        append_attribute("name", ("struct-" + node.id()).c_str());
-    }
+    append_attribute("name", (node.id()).c_str());
 
     if (!node.object().empty()) {
         append_attribute("object", node.object().c_str());
