@@ -8,18 +8,18 @@ newline
 #include <stdio.h>
 #include <string.h>
 
-typedef struct {
+struct String {
     char *str_;
     size_t len_;
-} String;
+};
 
 int main(int argc, char **argv) {
     if (argc != 3) {
         perror("./main <str> <substr>\n");
     }
 
-    String str = {argv[1], strlen(argv[1])};
-    String substr = {argv[2], strlen(argv[2])};
+    struct String str = {argv[1], strlen(argv[1])};
+    struct String substr = {argv[2], strlen(argv[2])};
 
     if (str.len_ < substr.len_) {
         printf("str < substr\n");
