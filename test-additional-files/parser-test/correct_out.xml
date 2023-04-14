@@ -137,6 +137,21 @@
       </if>
       <continue />
       <break />
+      <local-scope>
+        <data-create type="int" name="var_">0</data-create>
+        <local-scope>
+          <data-create type="int" name="var_">0</data-create>
+        </local-scope>
+        <data-create type="int" name="var_">0</data-create>
+      </local-scope>
+      <local-scope>
+        <local-scope>
+          <local-scope>
+            <data-create type="int" name="var_">0</data-create>
+          </local-scope>
+        </local-scope>
+      </local-scope>
+      <local-scope />
     </actions>
   </function>
 </Program>

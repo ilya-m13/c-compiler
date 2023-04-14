@@ -114,4 +114,18 @@ int main() {
     continue;
 
     break;
+
+    // clang-format off
+    {
+        int var_ = 0;
+        { int var_ = 0; }
+        int var_ = 0;
+    }
+    {
+        {
+            { int var_ = 0; }
+        }
+    }
+    {}
+// clang-format on
 }

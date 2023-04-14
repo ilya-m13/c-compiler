@@ -38,6 +38,15 @@ void XmlSerializer::visit(FunctionDefinition &node) {
     nodes_.pop();
 }
 
+void XmlSerializer::visit(LocalScope &node) {
+    auto local_scope_node = append_child("local-scope");
+    nodes_.push(local_scope_node);
+    for (auto *action : node.actions()) {
+        action->accept(*this);
+    }
+    nodes_.pop();
+}
+
 // Expressions
 
 void XmlSerializer::visit(Expression &node) {

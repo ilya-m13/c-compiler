@@ -15,6 +15,7 @@ class XmlSerializer final : public Visitor {
 
     void visit(HeaderFile &node) override;
     void visit(FunctionDefinition &node) override;
+    void visit(LocalScope &node) override;
 
     // Expressions
 

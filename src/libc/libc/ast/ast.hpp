@@ -81,6 +81,18 @@ class FunctionDefinition final : public Node {
     Childs args_declarations_;
 };
 
+class LocalScope final : public Node {
+  public:
+    explicit LocalScope(Childs actions) : actions_(std::move(actions)) {}
+    const Childs &actions() const {
+        return actions_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    Childs actions_;
+};
+
 // Expressions
 
 class Expression final : public Node {

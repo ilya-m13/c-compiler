@@ -314,3 +314,18 @@ TEST(ParserTest, InvalidValue) {
         EXPECT_FALSE(results[i].errors_.empty());
     }
 }
+
+TEST(ParserTest, InvalidLocalScope) {
+    std::vector<std::string> strings = {
+        "{}", "int main() {{var int = 0;}}", "int main() {{{}}"};
+    std::vector<c::ParseResult> results(strings.size());
+    std::stringstream sstream;
+
+    for (std::size_t i = 0; i < strings.size(); ++i) {
+        sstream << strings[i];
+        results[i] = c::parse(sstream);
+        sstream.str("");
+
+        EXPECT_FALSE(results[i].errors_.empty());
+    }
+}

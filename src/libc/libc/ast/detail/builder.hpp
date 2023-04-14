@@ -17,6 +17,7 @@ class Builder final : public CParserBaseVisitor {
     std::any visitHeader_file(CParser::Header_fileContext *context) override;
     std::any visitFunction_definition(
         CParser::Function_definitionContext *context) override;
+    std::any visitLocal_scope(CParser::Local_scopeContext *context) override;
 
     // Expressions
 

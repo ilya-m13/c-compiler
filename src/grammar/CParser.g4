@@ -37,6 +37,11 @@ return_type
 action
     : expression
     | statement
+    | local_scope
+    ;
+
+local_scope
+    : LBRACE action* RBRACE
     ;
 
 // expressions

@@ -11,6 +11,10 @@ void FunctionDefinition::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
+void LocalScope::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
 // Expressions
 
 void Expression::accept(Visitor &visitor) {

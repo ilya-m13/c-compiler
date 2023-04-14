@@ -10,6 +10,7 @@ class Visitor {
 
     virtual void visit(HeaderFile &node) = 0;
     virtual void visit(FunctionDefinition &node) = 0;
+    virtual void visit(LocalScope &node) = 0;
 
     // Expressions
 

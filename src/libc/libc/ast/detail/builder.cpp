@@ -45,6 +45,15 @@ std::any Builder::visitFunction_definition(
         return_type, id, actions, args_declarations));
 }
 
+std::any Builder::visitLocal_scope(CParser::Local_scopeContext *context) {
+    Childs actions;
+    for (auto *action : context->action()) {
+        actions.push_back(std::any_cast<Node *>(visit(action)));
+    }
+
+    return static_cast<Node *>(program_.create_node<LocalScope>(actions));
+}
+
 // Expressions
 
 std::any Builder::visitExpression(CParser::ExpressionContext *context) {

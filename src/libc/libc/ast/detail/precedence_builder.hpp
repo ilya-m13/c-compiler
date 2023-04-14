@@ -35,6 +35,7 @@ class PrecedenceBuilder final : public Visitor {
   private:
     void visit(HeaderFile & /*node*/) override {}
     void visit(FunctionDefinition & /*node*/) override {}
+    void visit(LocalScope & /*node*/) override {}
     void visit(Expression & /*node*/) override {}
     void visit(VariableWriting & /*node*/) override {}
     void visit(DataCreate & /*node*/) override {}
