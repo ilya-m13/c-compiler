@@ -63,6 +63,7 @@ class Visitor {
 
     // Types
 
+    virtual void visit(ArrayType &node) = 0;
     virtual void visit(PointerType &node) = 0;
     virtual void visit(DataType &node) = 0;
     virtual void visit(BaseType &node) = 0;

@@ -153,6 +153,10 @@ void PostfixDecrement::accept(Visitor &visitor) {
 
 // Types
 
+void ArrayType::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
 void PointerType::accept(Visitor &visitor) {
     visitor.visit(*this);
 }

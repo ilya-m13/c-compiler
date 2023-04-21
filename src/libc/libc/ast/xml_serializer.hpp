@@ -68,6 +68,7 @@ class XmlSerializer final : public Visitor {
 
     // Types
 
+    void visit(ArrayType &node) override;
     void visit(PointerType &node) override;
     void visit(DataType &node) override;
     void visit(BaseType &node) override;

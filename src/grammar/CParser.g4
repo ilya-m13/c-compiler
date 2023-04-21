@@ -192,7 +192,7 @@ array_create
 // TODO: array_init (size is rvalue without lvalue)
 
 array_uninit
-    : data_type ID LBRACKET value RBRACKET
+    : array_type ID LBRACKET value RBRACKET
     ;
 
 array_element_access
@@ -299,6 +299,10 @@ postfix_decrement
     ;
 
 // types
+
+array_type
+    : CONST? sign? base_type
+    ;
 
 pointer_type
     : CONST? sign? any_type MULTIP MULTIP*

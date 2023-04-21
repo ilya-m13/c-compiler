@@ -587,6 +587,27 @@ class PostfixDecrement final : public Node {
 
 // Types
 
+class ArrayType final : public Node {
+  public:
+    ArrayType(bool is_const, Node *sign, Node *type)
+        : is_const_(is_const), sign_(sign), type_(type) {}
+    bool is_const() const {
+        return is_const_;
+    }
+    Node *sign() const {
+        return sign_;
+    }
+    Node *type() const {
+        return type_;
+    }
+    void accept(Visitor &visitor) override;
+
+  private:
+    bool is_const_;
+    Node *sign_;
+    Node *type_;
+};
+
 class PointerType final : public Node {
   public:
     PointerType(bool is_const, Node *sign, Node *type, std::size_t level)

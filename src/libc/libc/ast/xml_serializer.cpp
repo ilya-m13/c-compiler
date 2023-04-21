@@ -300,6 +300,16 @@ void XmlSerializer::visit(PostfixDecrement &node) {
 
 // Types
 
+void XmlSerializer::visit(ArrayType &node) {
+    if (node.is_const()) {
+        append_attribute("const", "true");
+    }
+    if (node.sign() != nullptr) {
+        node.sign()->accept(*this);
+    }
+    node.type()->accept(*this);
+}
+
 void XmlSerializer::visit(PointerType &node) {
     if (node.is_const()) {
         append_attribute("const", "true");

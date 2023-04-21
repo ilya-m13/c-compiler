@@ -94,6 +94,7 @@ class Builder final : public CParserBaseVisitor {
 
     // Types
 
+    std::any visitArray_type(CParser::Array_typeContext *context) override;
     std::any visitPointer_type(CParser::Pointer_typeContext *context) override;
     std::any visitData_type(CParser::Data_typeContext *context) override;
     std::any visitBase_type(CParser::Base_typeContext *context) override;

@@ -54,6 +54,7 @@ class PrecedenceBuilder final : public Visitor {
     void visit(VariableInit & /*node*/) override {}
     void visit(VariableUninit & /*node*/) override {}
     void visit(Assignment & /*node*/) override {}
+    void visit(ArrayType & /*node*/) override {}
     void visit(PointerType & /*node*/) override {}
     void visit(DataType & /*node*/) override {}
     void visit(BaseType & /*node*/) override {}

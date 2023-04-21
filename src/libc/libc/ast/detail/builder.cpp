@@ -216,7 +216,7 @@ std::any Builder::visitStruct_element_refer(
 // Array
 
 std::any Builder::visitArray_uninit(CParser::Array_uninitContext *context) {
-    auto *type = std::any_cast<Node *>(visit(context->data_type()));
+    auto *type = std::any_cast<Node *>(visit(context->array_type()));
     auto id = context->ID()->getText();
     auto *size = std::any_cast<Node *>(visit(context->value()));
 
@@ -347,6 +347,18 @@ Builder::visitPostfix_decrement(CParser::Postfix_decrementContext *context) {
 }
 
 // Types
+
+std::any Builder::visitArray_type(CParser::Array_typeContext *context) {
+    bool is_const = static_cast<bool>(context->CONST());
+    Node *sign = nullptr;
+    if (context->sign() != nullptr) {
+        sign = std::any_cast<Node *>(visit(context->sign()));
+    }
+    auto *type = std::any_cast<Node *>(visit(context->base_type()));
+
+    return static_cast<Node *>(
+        program_.create_node<ArrayType>(is_const, sign, type));
+}
 
 std::any Builder::visitPointer_type(CParser::Pointer_typeContext *context) {
     bool is_const = static_cast<bool>(context->CONST());
