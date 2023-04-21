@@ -1,5 +1,6 @@
 #include <libc/dump_tokens.hpp>
 #include <libc/parser.hpp>
+#include <libc/symtab.hpp>
 
 #include <cxxopts.hpp>
 
@@ -15,6 +16,7 @@ int main(int argc, char **argv) {
         ("file-path", "", cxxopts::value<std::filesystem::path>())
         ("dump-tokens", "")
         ("dump-ast", "")
+        ("dump-symtab", "")
         ("h,help", "")
     ;
     // clang-format on
@@ -40,6 +42,18 @@ int main(int argc, char **argv) {
             c::dump_errors(parser_result.errors_, std::cerr);
         } else {
             c::dump_ast(parser_result.program_, std::cout);
+        }
+    } else if (result.count("dump-symtab") > 0) {
+        auto parser_result = c::parse(input_stream);
+        if (!parser_result.errors_.empty()) {
+            c::dump_errors(parser_result.errors_, std::cerr);
+        } else {
+            try {
+                auto symtab = c::get_symtab(parser_result.program_);
+                c::dump_symtab(symtab, std::cout);
+            } catch (const c::ast::symtab::SymtabException &ex) {
+                std::cout << ex.what() << '\n';
+            }
         }
     }
 
