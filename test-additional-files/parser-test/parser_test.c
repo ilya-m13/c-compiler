@@ -57,29 +57,29 @@ int main() {
                 1 &&
             var_ ||
         1;
-    const signed int var_ = var_ ||
+    const int var_ = var_ ||
         var_-- &&
             array_[var_] ==
                 ++var_<obj_.member_[var_] + call() * 1 / "str" - var_> var_ !=
                 1 &&
             var_ ||
         1;
-    unsigned char var_;
+    char var_;
     float var_ = var_;
 
-    const signed double *p_ = var_ ||
+    const double *p_ = var_ ||
         var_-- &&
             array_[var_] ==
                 ++var_<obj_.member_[var_] + call() * 1 / "str" - var_> var_ !=
                 1 &&
             var_ ||
         1;
-    unsigned short **p_;
+    short **p_;
     long *p_;
     void *p_ = var_;
 
     int array_[var_];
-    unsigned char array_[var_ = var_ * 1];
+    char array_[var_ = var_ * 1];
 
     struct Struct var_ = {var_ + 1, var_ = var_ * 1};
     struct Struct var_;

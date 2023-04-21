@@ -173,10 +173,6 @@ void VoidType::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
-void Sign::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
-
 // Literals
 
 void StringLiteral::accept(Visitor &visitor) {

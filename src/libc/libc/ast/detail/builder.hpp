@@ -99,7 +99,6 @@ class Builder final : public CParserBaseVisitor {
     std::any visitData_type(CParser::Data_typeContext *context) override;
     std::any visitBase_type(CParser::Base_typeContext *context) override;
     std::any visitVoid_type(CParser::Void_typeContext *context) override;
-    std::any visitSign(CParser::SignContext *context) override;
 
     // Literals
 

@@ -589,13 +589,9 @@ class PostfixDecrement final : public Node {
 
 class ArrayType final : public Node {
   public:
-    ArrayType(bool is_const, Node *sign, Node *type)
-        : is_const_(is_const), sign_(sign), type_(type) {}
+    ArrayType(bool is_const, Node *type) : is_const_(is_const), type_(type) {}
     bool is_const() const {
         return is_const_;
-    }
-    Node *sign() const {
-        return sign_;
     }
     Node *type() const {
         return type_;
@@ -604,19 +600,15 @@ class ArrayType final : public Node {
 
   private:
     bool is_const_;
-    Node *sign_;
     Node *type_;
 };
 
 class PointerType final : public Node {
   public:
-    PointerType(bool is_const, Node *sign, Node *type, std::size_t level)
-        : is_const_(is_const), sign_(sign), type_(type), level_(level) {}
+    PointerType(bool is_const, Node *type, std::size_t level)
+        : is_const_(is_const), type_(type), level_(level) {}
     bool is_const() const {
         return is_const_;
-    }
-    Node *sign() const {
-        return sign_;
     }
     Node *type() const {
         return type_;
@@ -628,20 +620,15 @@ class PointerType final : public Node {
 
   private:
     bool is_const_;
-    Node *sign_;
     Node *type_;
     std::size_t level_;
 };
 
 class DataType final : public Node {
   public:
-    DataType(bool is_const, Node *sign, Node *type)
-        : is_const_(is_const), sign_(sign), type_(type) {}
+    DataType(bool is_const, Node *type) : is_const_(is_const), type_(type) {}
     bool is_const() const {
         return is_const_;
-    }
-    Node *sign() const {
-        return sign_;
     }
     Node *type() const {
         return type_;
@@ -650,7 +637,6 @@ class DataType final : public Node {
 
   private:
     bool is_const_;
-    Node *sign_;
     Node *type_;
 };
 
@@ -672,18 +658,6 @@ class VoidType final : public Node {
         return "void";
     }
     void accept(Visitor &visitor) override;
-};
-
-class Sign final : public Node {
-  public:
-    explicit Sign(std::string sign) : sign_(std::move(sign)) {}
-    const std::string &sign() const {
-        return sign_;
-    }
-    void accept(Visitor &visitor) override;
-
-  private:
-    std::string sign_;
 };
 
 // Literals

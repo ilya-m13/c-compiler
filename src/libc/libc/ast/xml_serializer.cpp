@@ -304,18 +304,12 @@ void XmlSerializer::visit(ArrayType &node) {
     if (node.is_const()) {
         append_attribute("const", "true");
     }
-    if (node.sign() != nullptr) {
-        node.sign()->accept(*this);
-    }
     node.type()->accept(*this);
 }
 
 void XmlSerializer::visit(PointerType &node) {
     if (node.is_const()) {
         append_attribute("const", "true");
-    }
-    if (node.sign() != nullptr) {
-        node.sign()->accept(*this);
     }
     node.type()->accept(*this);
 
@@ -330,9 +324,6 @@ void XmlSerializer::visit(DataType &node) {
     if (node.is_const()) {
         append_attribute("const", "true");
     }
-    if (node.sign() != nullptr) {
-        node.sign()->accept(*this);
-    }
     node.type()->accept(*this);
 }
 
@@ -342,10 +333,6 @@ void XmlSerializer::visit(BaseType &node) {
 
 void XmlSerializer::visit(VoidType &node) {
     append_attribute("type", node.type());
-}
-
-void XmlSerializer::visit(Sign &node) {
-    append_attribute("sign", node.sign().c_str());
 }
 
 // Literals

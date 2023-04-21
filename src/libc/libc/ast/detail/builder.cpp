@@ -350,39 +350,25 @@ Builder::visitPostfix_decrement(CParser::Postfix_decrementContext *context) {
 
 std::any Builder::visitArray_type(CParser::Array_typeContext *context) {
     bool is_const = static_cast<bool>(context->CONST());
-    Node *sign = nullptr;
-    if (context->sign() != nullptr) {
-        sign = std::any_cast<Node *>(visit(context->sign()));
-    }
     auto *type = std::any_cast<Node *>(visit(context->base_type()));
 
-    return static_cast<Node *>(
-        program_.create_node<ArrayType>(is_const, sign, type));
+    return static_cast<Node *>(program_.create_node<ArrayType>(is_const, type));
 }
 
 std::any Builder::visitPointer_type(CParser::Pointer_typeContext *context) {
     bool is_const = static_cast<bool>(context->CONST());
-    Node *sign = nullptr;
-    if (context->sign() != nullptr) {
-        sign = std::any_cast<Node *>(visit(context->sign()));
-    }
     auto *type = std::any_cast<Node *>(visit(context->any_type()));
     std::size_t level = context->MULTIP().size();
 
     return static_cast<Node *>(
-        program_.create_node<PointerType>(is_const, sign, type, level));
+        program_.create_node<PointerType>(is_const, type, level));
 }
 
 std::any Builder::visitData_type(CParser::Data_typeContext *context) {
     bool is_const = static_cast<bool>(context->CONST());
-    Node *sign = nullptr;
-    if (context->sign() != nullptr) {
-        sign = std::any_cast<Node *>(visit(context->sign()));
-    }
     auto *type = std::any_cast<Node *>(visit(context->base_type()));
 
-    return static_cast<Node *>(
-        program_.create_node<DataType>(is_const, sign, type));
+    return static_cast<Node *>(program_.create_node<DataType>(is_const, type));
 }
 
 std::any Builder::visitBase_type(CParser::Base_typeContext *context) {
@@ -393,12 +379,6 @@ std::any Builder::visitBase_type(CParser::Base_typeContext *context) {
 
 std::any Builder::visitVoid_type(CParser::Void_typeContext * /*context*/) {
     return static_cast<Node *>(program_.create_node<VoidType>());
-}
-
-std::any Builder::visitSign(CParser::SignContext *context) {
-    auto sign = context->children[0]->getText();
-
-    return static_cast<Node *>(program_.create_node<Sign>(sign));
 }
 
 // Literals

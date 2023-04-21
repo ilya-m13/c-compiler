@@ -301,11 +301,11 @@ postfix_decrement
 // types
 
 array_type
-    : CONST? sign? base_type
+    : CONST? base_type
     ;
 
 pointer_type
-    : CONST? sign? any_type MULTIP MULTIP*
+    : CONST? any_type MULTIP MULTIP*
     ;
 
 any_type
@@ -315,7 +315,7 @@ any_type
     ;
 
 data_type
-    : CONST? sign? base_type
+    : CONST? base_type
     ;
 
 base_type
@@ -329,11 +329,6 @@ base_type
 
 void_type
     : VOID
-    ;
-
-sign
-    : UNSIGNED
-    | SIGNED
     ;
 
 // literals

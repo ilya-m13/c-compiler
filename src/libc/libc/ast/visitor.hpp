@@ -68,7 +68,6 @@ class Visitor {
     virtual void visit(DataType &node) = 0;
     virtual void visit(BaseType &node) = 0;
     virtual void visit(VoidType &node) = 0;
-    virtual void visit(Sign &node) = 0;
 
     // Literals
 

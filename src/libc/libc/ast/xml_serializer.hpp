@@ -73,7 +73,6 @@ class XmlSerializer final : public Visitor {
     void visit(DataType &node) override;
     void visit(BaseType &node) override;
     void visit(VoidType &node) override;
-    void visit(Sign &node) override;
 
     // Literals
 

@@ -10,7 +10,7 @@ newline
 
 struct String {
     char *str_;
-    size_t len_;
+    int len_;
 };
 
 int main(int argc, char **argv) {
@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    for (unsigned long i = 0; i < str.len_; ++i) {
+    for (int i = 0; i < str.len_; ++i) {
         if (str.str_[i] == substr.str_[0]) {
             int equal_len_substr = 1;
             for (; equal_len_substr < substr.len_; ++equal_len_substr) {
