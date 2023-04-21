@@ -209,9 +209,6 @@ void XmlSerializer::visit(StructElementRefer &node) {
 // Array
 
 void XmlSerializer::visit(ArrayUninit &node) {
-    if (node.sign() != nullptr) {
-        node.sign()->accept(*this);
-    }
     node.type()->accept(*this);
     append_attribute("name", node.id().c_str());
 

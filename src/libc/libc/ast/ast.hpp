@@ -347,11 +347,8 @@ class StructElementRefer final : public Node {
 
 class ArrayUninit final : public Node {
   public:
-    ArrayUninit(Node *sign, Node *type, std::string id, Node *size)
-        : sign_(sign), type_(type), id_(std::move(id)), size_(size) {}
-    Node *sign() const {
-        return sign_;
-    }
+    ArrayUninit(Node *type, std::string id, Node *size)
+        : type_(type), id_(std::move(id)), size_(size) {}
     Node *type() const {
         return type_;
     }
@@ -364,7 +361,6 @@ class ArrayUninit final : public Node {
     void accept(Visitor &visitor) override;
 
   private:
-    Node *sign_;
     Node *type_;
     std::string id_;
     Node *size_;

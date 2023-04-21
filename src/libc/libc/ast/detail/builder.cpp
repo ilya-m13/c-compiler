@@ -216,16 +216,12 @@ std::any Builder::visitStruct_element_refer(
 // Array
 
 std::any Builder::visitArray_uninit(CParser::Array_uninitContext *context) {
-    Node *sign = nullptr;
-    if (context->sign() != nullptr) {
-        sign = std::any_cast<Node *>(visit(context->sign()));
-    }
-    auto *type = std::any_cast<Node *>(visit(context->base_type()));
+    auto *type = std::any_cast<Node *>(visit(context->data_type()));
     auto id = context->ID()->getText();
     auto *size = std::any_cast<Node *>(visit(context->value()));
 
     return static_cast<Node *>(
-        program_.create_node<ArrayUninit>(sign, type, id, size));
+        program_.create_node<ArrayUninit>(type, id, size));
 }
 
 std::any Builder::visitArray_element_access(

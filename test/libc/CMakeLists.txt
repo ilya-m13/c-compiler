@@ -1,5 +1,3 @@
-enable_testing()
-
 include(CompileOptions)
 include(GoogleTest)
 

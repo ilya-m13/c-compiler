@@ -192,7 +192,7 @@ array_create
 // TODO: array_init (size is rvalue without lvalue)
 
 array_uninit
-    : sign? base_type ID LBRACKET value RBRACKET
+    : data_type ID LBRACKET value RBRACKET
     ;
 
 array_element_access
