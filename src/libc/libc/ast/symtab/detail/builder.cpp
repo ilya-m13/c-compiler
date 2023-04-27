@@ -10,6 +10,13 @@ void Builder::visit(Program &node) {
 }
 
 void Builder::visit(FunctionDefinition &node) {
+    for (auto *stack_node = symtab_.find_sym(node.id()); stack_node != nullptr;
+         stack_node = stack_node->prev_) {
+        if (dynamic_cast<FunctionSymbol *>(stack_node->sym_.get()) != nullptr) {
+            throw SymbolRedefinition(node.id() + " symbol already defined");
+        }
+    }
+
     auto unique_ptr = std::make_unique<FunctionSymbol>(node.id());
     auto *func_sym = unique_ptr.get();
     symtab_.add_sym(std::move(unique_ptr));
@@ -420,6 +427,7 @@ void Builder::check_sym_access(const std::string &name) const {
     throw UndefinedReference("Reference to an undefined symbol " + name);
 }
 
+// TODO: after adding globalscope remove this
 void Builder::check_sym_creation(const std::string &name) const {
     auto symbols = scopes_.top()->get_symbols();
     auto it = symbols.find(name);

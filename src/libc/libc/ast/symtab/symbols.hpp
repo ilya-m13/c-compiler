@@ -100,6 +100,8 @@ class LocalScope : public Scope {
     std::string name_{"local"};
 };
 
+// TODO: add globalscope
+
 class TypedSymbol {
   public:
     virtual ~TypedSymbol() = default;
