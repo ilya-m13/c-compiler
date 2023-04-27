@@ -26,7 +26,8 @@ Checks: >
   -cppcoreguidelines-special-member-functions,
   -hicpp-special-member-functions,
   -readability-convert-member-functions-to-static,
-  -google-readability-todo
+  -google-readability-todo,
+  -hicpp-signed-bitwise
 WarningsAsErrors: true
 HeaderFilterRegex: '.*/libc/'
 AnalyzeTemporaryDtors: false

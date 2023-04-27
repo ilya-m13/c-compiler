@@ -4,7 +4,7 @@ options {
 	tokenVocab = CLexer;
 }
 
-// $antlr-format false
+// | struct_declaration | struct_definition// $antlr-format false
 
 program
     : element* EOF
@@ -13,8 +13,8 @@ program
 element
     : header_file
     | function_definition
-    | struct_declaration
-    | struct_definition
+    // | struct_declaration
+    // | struct_definition
     ;
 
 header_file
@@ -30,13 +30,18 @@ function_definition
 return_type
     : data_type
     | pointer_type
-    | struct_type
+    // | struct_type
     | void_type
     ;
 
 action
     : expression
     | statement
+    | local_scope
+    ;
+
+local_scope
+    : LBRACE action* RBRACE
     ;
 
 // expressions
@@ -61,7 +66,7 @@ variable_writing
 data_create
     : variable_create
     | array_create
-    | struct_create
+    // | struct_create
     ;
 
 // statements
@@ -120,7 +125,7 @@ rvalue_expression
 lvalue
     : variable_access
     | array_element_access
-    | struct_element_access
+    // | struct_element_access
     ;
 
 rvalue
@@ -135,50 +140,48 @@ rvalue
 data_uninit
     : variable_uninit
     | array_uninit
-    | struct_uninit
+    // | struct_uninit
     ;
 
-// struct
+// // struct
 
-struct_declaration
-    : STRUCT ID SEMICOLON
-    | TYPEDEF STRUCT ID ID SEMICOLON
-    ;
+// struct_declaration
+//     : STRUCT ID SEMICOLON
+//     ;
 
-struct_definition
-    : TYPEDEF STRUCT LBRACE (data_uninit SEMICOLON)+ RBRACE ID SEMICOLON
-    | STRUCT ID LBRACE (data_uninit SEMICOLON)+ RBRACE ID? SEMICOLON
-    ;
+// struct_definition
+//     : STRUCT ID LBRACE (data_uninit SEMICOLON)+ RBRACE ID? SEMICOLON
+//     ;
 
-struct_create
-    : struct_uninit
-    | struct_init
-    ;
+// struct_create
+//     : struct_uninit
+//     | struct_init
+//     ;
 
-struct_init
-    : struct_type ID ASSIGN LBRACE value (COMMA value)* RBRACE
-    ;
+// struct_init
+//     : struct_type ID ASSIGN LBRACE value (COMMA value)* RBRACE
+//     ;
 
-struct_uninit
-    : struct_type ID
-    ;
+// struct_uninit
+//     : struct_type ID
+//     ;
 
-struct_element_access
-    : struct_lvalue (struct_element_refer struct_lvalue)+
-    ;
+// struct_element_access
+//     : struct_lvalue (struct_element_refer struct_lvalue)+
+//     ;
 
-struct_type
-    : CONST? STRUCT? ID
-    ;
+// struct_type
+//     : CONST? STRUCT ID
+//     ;
 
-struct_lvalue
-    : variable_access
-    | array_element_access
-    ;
+// struct_lvalue
+//     : variable_access
+//     | array_element_access
+//     ;
 
-struct_element_refer
-    : PERIOD
-    ;
+// struct_element_refer
+//     : PERIOD
+//     ;
 
 // array
 
@@ -189,7 +192,7 @@ array_create
 // TODO: array_init (size is rvalue without lvalue)
 
 array_uninit
-    : sign? base_type ID LBRACKET value RBRACKET
+    : array_type ID LBRACKET value RBRACKET
     ;
 
 array_element_access
@@ -297,18 +300,22 @@ postfix_decrement
 
 // types
 
+array_type
+    : CONST? base_type
+    ;
+
 pointer_type
-    : CONST? sign? any_type MULTIP MULTIP*
+    : CONST? any_type MULTIP MULTIP*
     ;
 
 any_type
     : base_type
     | void_type
-    | struct_type
+    // | struct_type
     ;
 
 data_type
-    : CONST? sign? base_type
+    : CONST? base_type
     ;
 
 base_type
@@ -322,11 +329,6 @@ base_type
 
 void_type
     : VOID
-    ;
-
-sign
-    : UNSIGNED
-    | SIGNED
     ;
 
 // literals

@@ -89,46 +89,39 @@ TEST(ParserTest, InvalidFunctionDefinition) {
     }
 }
 
-TEST(ParserTest, InvalidStructDeclaration) {
-    std::vector<std::string> strings = {
-        "strct Struct;",
-        "typedef Strct Struct Struct;",
-        "tpdf struct Struct Struct;",
-        "int main() {struct return;}",
-        "struct return;"};
-    std::vector<c::ParseResult> results(strings.size());
-    std::stringstream sstream;
+// TEST(ParserTest, InvalidStructDeclaration) {
+//     std::vector<std::string> strings = {
+//         "strct Struct;", "int main() {struct return;}", "struct return;"};
+//     std::vector<c::ParseResult> results(strings.size());
+//     std::stringstream sstream;
 
-    for (std::size_t i = 0; i < strings.size(); ++i) {
-        sstream << strings[i];
-        results[i] = c::parse(sstream);
-        sstream.str("");
+//     for (std::size_t i = 0; i < strings.size(); ++i) {
+//         sstream << strings[i];
+//         results[i] = c::parse(sstream);
+//         sstream.str("");
 
-        EXPECT_FALSE(results[i].errors_.empty());
-    }
-}
+//         EXPECT_FALSE(results[i].errors_.empty());
+//     }
+// }
 
-TEST(ParserTest, InvalidStructDefinition) {
-    std::vector<std::string> strings = {
-        "struct Struct {member1; member2};",
-        "struct Struct {int member1; int member2 = 0};",
-        "struct Struct {struct Struct {int member;};};",
-        "typedef struct Struct {member1; member2};",
-        "typedef struct Struct {int member1; int member2 = 0};",
-        "typedef struct Struct {struct Struct {int member;};};",
-        "int main() {struct Struct {int member};}",
-        "struct Struct {int return;};"};
-    std::vector<c::ParseResult> results(strings.size());
-    std::stringstream sstream;
+// TEST(ParserTest, InvalidStructDefinition) {
+//     std::vector<std::string> strings = {
+//         "struct Struct {member1; member2};",
+//         "struct Struct {int member1; int member2 = 0};",
+//         "struct Struct {struct Struct {int member;};};",
+//         "int main() {struct Struct {int member};}",
+//         "struct Struct {int return;};"};
+//     std::vector<c::ParseResult> results(strings.size());
+//     std::stringstream sstream;
 
-    for (std::size_t i = 0; i < strings.size(); ++i) {
-        sstream << strings[i];
-        results[i] = c::parse(sstream);
-        sstream.str("");
+//     for (std::size_t i = 0; i < strings.size(); ++i) {
+//         sstream << strings[i];
+//         results[i] = c::parse(sstream);
+//         sstream.str("");
 
-        EXPECT_FALSE(results[i].errors_.empty());
-    }
-}
+//         EXPECT_FALSE(results[i].errors_.empty());
+//     }
+// }
 
 TEST(ParserTest, InvalidFunctionCall) {
     std::vector<std::string> strings = {
@@ -158,7 +151,6 @@ TEST(ParserTest, InvalidVariableWriting) {
         "int var = 0;",
         "int main() {var 0;}",
         "int main() {var = int main() {};}",
-        "int main() {var = struct Struct {int member;};}",
         "int main() {var = int var;}",
         "int main() {5 = var;}",
         "int main() {var = var}",
@@ -182,8 +174,6 @@ TEST(ParserTest, InvalidDataCreate) {
         "int *var;",
         "int *var = 0;",
         "int var[5];",
-        "Struct var;",
-        "Struct var = {1}",
         "int main() {var int;}",
         "int main() {var[5] int;}",
         "int main() {int var}",
@@ -231,7 +221,6 @@ TEST(ParserTest, InvalidForStatement) {
         "int main() {for (return;;) {}}",
         "int main() {for (;int var;) {}}",
         "int main() {for (;;int var) {}}",
-        "int main() {for (;;) {struct Struct {int member};}}",
         "int main() {for (continue;;) {}}"};
     std::vector<c::ParseResult> results(strings.size());
     std::stringstream sstream;
@@ -310,6 +299,21 @@ TEST(ParserTest, InvalidValue) {
         "int main() {5+5;}",
         "int main() {var}",
         "int main() {var;}"};
+    std::vector<c::ParseResult> results(strings.size());
+    std::stringstream sstream;
+
+    for (std::size_t i = 0; i < strings.size(); ++i) {
+        sstream << strings[i];
+        results[i] = c::parse(sstream);
+        sstream.str("");
+
+        EXPECT_FALSE(results[i].errors_.empty());
+    }
+}
+
+TEST(ParserTest, InvalidLocalScope) {
+    std::vector<std::string> strings = {
+        "{}", "int main() {{var int = 0;}}", "int main() {{{}}"};
     std::vector<c::ParseResult> results(strings.size());
     std::stringstream sstream;
 

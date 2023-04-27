@@ -38,6 +38,15 @@ void XmlSerializer::visit(FunctionDefinition &node) {
     nodes_.pop();
 }
 
+void XmlSerializer::visit(LocalScope &node) {
+    auto local_scope_node = append_child("local-scope");
+    nodes_.push(local_scope_node);
+    for (auto *action : node.actions()) {
+        action->accept(*this);
+    }
+    nodes_.pop();
+}
+
 // Expressions
 
 void XmlSerializer::visit(Expression &node) {
@@ -134,83 +143,72 @@ void XmlSerializer::visit(BreakStatement & /*node*/) {
     append_child("break");
 }
 
-// Struct
+// // Struct
 
-void XmlSerializer::visit(StructDeclaration &node) {
-    auto struct_declaration_node = append_child("struct-declaration");
-    nodes_.push(struct_declaration_node);
-    if (node.is_typedef()) {
-        append_attribute("name", node.id().c_str());
-    } else {
-        append_attribute("name", ("struct-" + node.id()).c_str());
-    }
-    nodes_.pop();
-}
+// void XmlSerializer::visit(StructDeclaration &node) {
+//     auto struct_declaration_node = append_child("struct-declaration");
+//     nodes_.push(struct_declaration_node);
+//     append_attribute("name", (node.id()).c_str());
+//     nodes_.pop();
+// }
 
-void XmlSerializer::visit(StructDefinition &node) {
-    auto struct_definition_node = append_child("struct-definition");
-    nodes_.push(struct_definition_node);
+// void XmlSerializer::visit(StructDefinition &node) {
+//     auto struct_definition_node = append_child("struct-definition");
+//     nodes_.push(struct_definition_node);
 
-    if (node.is_typedef()) {
-        append_attribute("name", node.id().c_str());
-    } else {
-        append_attribute("name", ("struct-" + node.id()).c_str());
-    }
+//     append_attribute("name", (node.id()).c_str());
 
-    if (!node.object().empty()) {
-        append_attribute("object", node.object().c_str());
-    }
+//     if (!node.object().empty()) {
+//         append_attribute("object", node.object().c_str());
+//     }
 
-    for (auto *child : node.data_uninit()) {
-        auto member_node = append_child("member");
-        nodes_.push(member_node);
-        child->accept(*this);
-        nodes_.pop();
-    }
+//     for (auto *child : node.data_uninit()) {
+//         auto member_node = append_child("member");
+//         nodes_.push(member_node);
+//         child->accept(*this);
+//         nodes_.pop();
+//     }
 
-    nodes_.pop();
-}
+//     nodes_.pop();
+// }
 
-void XmlSerializer::visit(StructInit &node) {
-    node.struct_type()->accept(*this);
-    append_attribute("name", node.id().c_str());
+// void XmlSerializer::visit(StructInit &node) {
+//     node.struct_type()->accept(*this);
+//     append_attribute("name", node.id().c_str());
 
-    for (auto *value : node.values()) {
-        auto value_node = append_child("value");
-        nodes_.push(value_node);
-        value->accept(*this);
-        nodes_.pop();
-    }
-}
+//     for (auto *value : node.values()) {
+//         auto value_node = append_child("value");
+//         nodes_.push(value_node);
+//         value->accept(*this);
+//         nodes_.pop();
+//     }
+// }
 
-void XmlSerializer::visit(StructUninit &node) {
-    node.struct_type()->accept(*this);
-    append_attribute("name", node.id().c_str());
-}
+// void XmlSerializer::visit(StructUninit &node) {
+//     node.struct_type()->accept(*this);
+//     append_attribute("name", node.id().c_str());
+// }
 
-void XmlSerializer::visit(StructElementAccess &node) {
-    for (auto *child : node.lvalue_refer_stream()) {
-        child->accept(*this);
-    }
-}
+// void XmlSerializer::visit(StructElementAccess &node) {
+//     for (auto *child : node.lvalue_refer_stream()) {
+//         child->accept(*this);
+//     }
+// }
 
-void XmlSerializer::visit(StructType &node) {
-    if (node.is_const()) {
-        append_attribute("const", "true");
-    }
-    append_attribute("type", node.id().c_str());
-}
+// void XmlSerializer::visit(StructType &node) {
+//     if (node.is_const()) {
+//         append_attribute("const", "true");
+//     }
+//     append_attribute("type", node.id().c_str());
+// }
 
-void XmlSerializer::visit(StructElementRefer &node) {
-    append_text(node.element_refer().c_str());
-}
+// void XmlSerializer::visit(StructElementRefer &node) {
+//     append_text(node.element_refer().c_str());
+// }
 
 // Array
 
 void XmlSerializer::visit(ArrayUninit &node) {
-    if (node.sign() != nullptr) {
-        node.sign()->accept(*this);
-    }
     node.type()->accept(*this);
     append_attribute("name", node.id().c_str());
 
@@ -302,12 +300,16 @@ void XmlSerializer::visit(PostfixDecrement &node) {
 
 // Types
 
-void XmlSerializer::visit(PointerType &node) {
+void XmlSerializer::visit(ArrayType &node) {
     if (node.is_const()) {
         append_attribute("const", "true");
     }
-    if (node.sign() != nullptr) {
-        node.sign()->accept(*this);
+    node.type()->accept(*this);
+}
+
+void XmlSerializer::visit(PointerType &node) {
+    if (node.is_const()) {
+        append_attribute("const", "true");
     }
     node.type()->accept(*this);
 
@@ -322,9 +324,6 @@ void XmlSerializer::visit(DataType &node) {
     if (node.is_const()) {
         append_attribute("const", "true");
     }
-    if (node.sign() != nullptr) {
-        node.sign()->accept(*this);
-    }
     node.type()->accept(*this);
 }
 
@@ -334,10 +333,6 @@ void XmlSerializer::visit(BaseType &node) {
 
 void XmlSerializer::visit(VoidType &node) {
     append_attribute("type", node.type());
-}
-
-void XmlSerializer::visit(Sign &node) {
-    append_attribute("sign", node.sign().c_str());
 }
 
 // Literals

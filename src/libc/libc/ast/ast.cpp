@@ -11,6 +11,10 @@ void FunctionDefinition::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
+void LocalScope::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
 // Expressions
 
 void Expression::accept(Visitor &visitor) {
@@ -51,35 +55,35 @@ void BreakStatement::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
-// Struct
+// // Struct
 
-void StructDeclaration::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructDeclaration::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructDefinition::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructDefinition::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructInit::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructInit::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructUninit::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructUninit::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructElementAccess::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructElementAccess::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructType::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructType::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructElementRefer::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructElementRefer::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
 // Array
 
@@ -149,6 +153,10 @@ void PostfixDecrement::accept(Visitor &visitor) {
 
 // Types
 
+void ArrayType::accept(Visitor &visitor) {
+    visitor.visit(*this);
+}
+
 void PointerType::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
@@ -162,10 +170,6 @@ void BaseType::accept(Visitor &visitor) {
 }
 
 void VoidType::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
-
-void Sign::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 

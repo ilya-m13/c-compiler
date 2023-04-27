@@ -10,6 +10,7 @@ class Visitor {
 
     virtual void visit(HeaderFile &node) = 0;
     virtual void visit(FunctionDefinition &node) = 0;
+    virtual void visit(LocalScope &node) = 0;
 
     // Expressions
 
@@ -26,15 +27,15 @@ class Visitor {
     virtual void visit(ContinueStatement &node) = 0;
     virtual void visit(BreakStatement &node) = 0;
 
-    // Struct
+    // // Struct
 
-    virtual void visit(StructDeclaration &node) = 0;
-    virtual void visit(StructDefinition &node) = 0;
-    virtual void visit(StructInit &node) = 0;
-    virtual void visit(StructUninit &node) = 0;
-    virtual void visit(StructElementAccess &node) = 0;
-    virtual void visit(StructType &node) = 0;
-    virtual void visit(StructElementRefer &node) = 0;
+    // virtual void visit(StructDeclaration &node) = 0;
+    // virtual void visit(StructDefinition &node) = 0;
+    // virtual void visit(StructInit &node) = 0;
+    // virtual void visit(StructUninit &node) = 0;
+    // virtual void visit(StructElementAccess &node) = 0;
+    // virtual void visit(StructType &node) = 0;
+    // virtual void visit(StructElementRefer &node) = 0;
 
     // Array
 
@@ -62,11 +63,11 @@ class Visitor {
 
     // Types
 
+    virtual void visit(ArrayType &node) = 0;
     virtual void visit(PointerType &node) = 0;
     virtual void visit(DataType &node) = 0;
     virtual void visit(BaseType &node) = 0;
     virtual void visit(VoidType &node) = 0;
-    virtual void visit(Sign &node) = 0;
 
     // Literals
 

@@ -17,6 +17,7 @@ class Builder final : public CParserBaseVisitor {
     std::any visitHeader_file(CParser::Header_fileContext *context) override;
     std::any visitFunction_definition(
         CParser::Function_definitionContext *context) override;
+    std::any visitLocal_scope(CParser::Local_scopeContext *context) override;
 
     // Expressions
 
@@ -39,20 +40,19 @@ class Builder final : public CParserBaseVisitor {
     std::any
     visitBreak_statement(CParser::Break_statementContext *context) override;
 
-    // Struct
+    // // Struct
 
-    std::any visitStruct_declaration(
-        CParser::Struct_declarationContext *context) override;
-    std::any
-    visitStruct_definition(CParser::Struct_definitionContext *context) override;
-    std::any visitStruct_init(CParser::Struct_initContext *context) override;
-    std::any
-    visitStruct_uninit(CParser::Struct_uninitContext *context) override;
-    std::any visitStruct_element_access(
-        CParser::Struct_element_accessContext *context) override;
-    std::any visitStruct_type(CParser::Struct_typeContext *context) override;
-    std::any visitStruct_element_refer(
-        CParser::Struct_element_referContext *context) override;
+    // std::any visitStruct_declaration(
+    //     CParser::Struct_declarationContext *context) override;
+    // std::any
+    // visitStruct_definition(CParser::Struct_definitionContext *context)
+    // override; std::any visitStruct_init(CParser::Struct_initContext *context)
+    // override; std::any visitStruct_uninit(CParser::Struct_uninitContext
+    // *context) override; std::any visitStruct_element_access(
+    //     CParser::Struct_element_accessContext *context) override;
+    // std::any visitStruct_type(CParser::Struct_typeContext *context) override;
+    // std::any visitStruct_element_refer(
+    //     CParser::Struct_element_referContext *context) override;
 
     // Array
 
@@ -93,11 +93,11 @@ class Builder final : public CParserBaseVisitor {
 
     // Types
 
+    std::any visitArray_type(CParser::Array_typeContext *context) override;
     std::any visitPointer_type(CParser::Pointer_typeContext *context) override;
     std::any visitData_type(CParser::Data_typeContext *context) override;
     std::any visitBase_type(CParser::Base_typeContext *context) override;
     std::any visitVoid_type(CParser::Void_typeContext *context) override;
-    std::any visitSign(CParser::SignContext *context) override;
 
     // Literals
 

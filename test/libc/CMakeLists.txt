@@ -1,5 +1,3 @@
-enable_testing()
-
 include(CompileOptions)
 include(GoogleTest)
 
@@ -17,6 +15,7 @@ target_sources(
     PRIVATE
         libc/dump_tokens.cpp
         libc/parser.cpp
+        libc/symtab.cpp
 )
 target_link_libraries(
     ${test_name}

@@ -1,21 +1,18 @@
 #pragma once
 
+#include <libc/ast/symtab/symtab.hpp>
 #include <libc/ast/visitor.hpp>
 
-#include <pugixml.hpp>
+namespace c::ast::symtab::detail {
 
-#include <ostream>
-#include <stack>
-
-namespace c::ast {
-
-class XmlSerializer final : public Visitor {
+class Builder final : public Visitor {
   public:
-    static void exec(Program &program, std::ostream &out);
+    explicit Builder(Symtab &symtab) : symtab_(symtab) {}
 
-    void visit(HeaderFile &node) override;
+    void visit(Program &node);
+
     void visit(FunctionDefinition &node) override;
-    void visit(LocalScope &node) override;
+    void visit(ast::LocalScope &node) override;
 
     // Expressions
 
@@ -29,10 +26,8 @@ class XmlSerializer final : public Visitor {
     void visit(ReturnStatement &node) override;
     void visit(ForStatement &node) override;
     void visit(IfStatement &node) override;
-    void visit(ContinueStatement &node) override;
-    void visit(BreakStatement &node) override;
 
-    // // Struct
+    // Struct
 
     // void visit(StructDeclaration &node) override;
     // void visit(StructDefinition &node) override;
@@ -40,7 +35,6 @@ class XmlSerializer final : public Visitor {
     // void visit(StructUninit &node) override;
     // void visit(StructElementAccess &node) override;
     // void visit(StructType &node) override;
-    // void visit(StructElementRefer &node) override;
 
     // Array
 
@@ -57,10 +51,6 @@ class XmlSerializer final : public Visitor {
 
     void visit(Assignment &node) override;
     void visit(RvalueOperation &node) override;
-    void visit(AssignmentOperator &node) override;
-    void visit(ArithmeticOperator &node) override;
-    void visit(RelationalOperator &node) override;
-    void visit(LogicalOperator &node) override;
     void visit(PrefixIncrement &node) override;
     void visit(PostfixIncrement &node) override;
     void visit(PrefixDecrement &node) override;
@@ -68,24 +58,39 @@ class XmlSerializer final : public Visitor {
 
     // Types
 
-    void visit(ArrayType &node) override;
-    void visit(PointerType &node) override;
+    void visit(ast::ArrayType &node) override;
+    void visit(ast::PointerType &node) override;
     void visit(DataType &node) override;
     void visit(BaseType &node) override;
     void visit(VoidType &node) override;
 
-    // Literals
-
-    void visit(StringLiteral &node) override;
-    void visit(IntegerLiteral &node) override;
-
   private:
-    pugi::xml_node append_child(const char *name);
-    void append_text(const char *text);
-    void append_attribute(const char *name, const char *value);
+    // void visit(StructElementRefer & /*node*/) override {}
+    void visit(AssignmentOperator & /*node*/) override {}
+    void visit(ArithmeticOperator & /*node*/) override {}
+    void visit(RelationalOperator & /*node*/) override {}
+    void visit(LogicalOperator & /*node*/) override {}
+    void visit(HeaderFile & /*node*/) override {}
+    void visit(ContinueStatement & /*node*/) override {}
+    void visit(BreakStatement & /*node*/) override {}
+    void visit(StringLiteral & /*node*/) override {}
+    void visit(IntegerLiteral & /*node*/) override {}
 
-    pugi::xml_document doc_;
-    std::stack<pugi::xml_node> nodes_;
+    void check_sym_access(const std::string &name) const;
+    void check_sym_creation(const std::string &name) const;
+
+    Symtab &symtab_;
+    std::stack<Scope *> scopes_;
+
+    std::unique_ptr<Type> type_;
+    std::string type_name_;
+
+    std::size_t insertion_order_{0};
+
+    // bool is_struct_symbols_{false};
+    // std::string sym_name_;
+    // VariableSymbol *sym_{nullptr};
+    // bool is_struct_access_{false};
 };
 
-} // namespace c::ast
+} // namespace c::ast::symtab::detail

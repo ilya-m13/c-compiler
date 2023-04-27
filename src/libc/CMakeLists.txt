@@ -18,15 +18,22 @@ target_sources(
         libc/ast/ast.hpp
         libc/ast/visitor.hpp
         libc/ast/xml_serializer.hpp
+        libc/symtab.hpp
+        libc/ast/symtab/symtab.hpp
+        libc/ast/symtab/symbols.hpp
     PRIVATE
         libc/dump_tokens.cpp
         libc/parser.cpp
         libc/ast/ast.cpp
         libc/ast/xml_serializer.cpp
         libc/ast/detail/builder.cpp
-        libc/ast/detail/precedence_builder.cpp
         libc/ast/detail/builder.hpp
+        libc/ast/detail/precedence_builder.cpp
         libc/ast/detail/precedence_builder.hpp
+        libc/symtab.cpp
+        libc/ast/symtab/symtab.cpp
+        libc/ast/symtab/detail/builder.cpp
+        libc/ast/symtab/detail/builder.hpp
 )
 
 target_link_libraries(

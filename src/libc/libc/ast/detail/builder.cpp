@@ -45,6 +45,15 @@ std::any Builder::visitFunction_definition(
         return_type, id, actions, args_declarations));
 }
 
+std::any Builder::visitLocal_scope(CParser::Local_scopeContext *context) {
+    Childs actions;
+    for (auto *action : context->action()) {
+        actions.push_back(std::any_cast<Node *>(visit(action)));
+    }
+
+    return static_cast<Node *>(program_.create_node<LocalScope>(actions));
+}
+
 // Expressions
 
 std::any Builder::visitExpression(CParser::ExpressionContext *context) {
@@ -132,94 +141,89 @@ Builder::visitBreak_statement(CParser::Break_statementContext * /*context*/) {
     return static_cast<Node *>(program_.create_node<BreakStatement>());
 }
 
-// Struct
+// // Struct
 
-// TODO: equal ID[0] with ID[1]
-std::any
-Builder::visitStruct_declaration(CParser::Struct_declarationContext *context) {
-    bool is_typedef = static_cast<bool>(context->TYPEDEF());
-    auto id = context->ID()[0]->getText();
+// std::any
+// Builder::visitStruct_declaration(CParser::Struct_declarationContext *context)
+// {
+//     auto id = context->ID()->getText();
 
-    return static_cast<Node *>(
-        program_.create_node<StructDeclaration>(is_typedef, id));
-}
+//     return static_cast<Node *>(program_.create_node<StructDeclaration>(id));
+// }
 
-std::any
-Builder::visitStruct_definition(CParser::Struct_definitionContext *context) {
-    bool is_typedef = static_cast<bool>(context->TYPEDEF());
-    auto id = context->ID()[0]->getText();
-    std::string object;
-    if (context->ID().size() != 1) {
-        object = context->ID()[1]->getText();
-    }
-    Childs data_uninit;
-    for (auto *child : context->data_uninit()) {
-        data_uninit.push_back(std::any_cast<Node *>(visit(child)));
-    }
+// std::any
+// Builder::visitStruct_definition(CParser::Struct_definitionContext *context) {
+//     auto id = context->ID()[0]->getText();
+//     std::string object;
+//     if (context->ID().size() != 1) {
+//         object = context->ID()[1]->getText();
+//     }
+//     Childs data_uninit;
+//     for (auto *child : context->data_uninit()) {
+//         data_uninit.push_back(std::any_cast<Node *>(visit(child)));
+//     }
 
-    return static_cast<Node *>(program_.create_node<StructDefinition>(
-        is_typedef, id, object, data_uninit));
-}
+//     return static_cast<Node *>(
+//         program_.create_node<StructDefinition>(id, object, data_uninit));
+// }
 
-std::any Builder::visitStruct_init(CParser::Struct_initContext *context) {
-    auto *struct_type = std::any_cast<Node *>(visit(context->struct_type()));
-    auto id = context->ID()->getText();
-    Childs values;
-    for (auto *value : context->value()) {
-        values.push_back(std::any_cast<Node *>(visit(value)));
-    }
+// std::any Builder::visitStruct_init(CParser::Struct_initContext *context) {
+//     auto *struct_type = std::any_cast<Node *>(visit(context->struct_type()));
+//     auto id = context->ID()->getText();
+//     Childs values;
+//     for (auto *value : context->value()) {
+//         values.push_back(std::any_cast<Node *>(visit(value)));
+//     }
 
-    return static_cast<Node *>(
-        program_.create_node<StructInit>(struct_type, id, values));
-}
+//     return static_cast<Node *>(
+//         program_.create_node<StructInit>(struct_type, id, values));
+// }
 
-std::any Builder::visitStruct_uninit(CParser::Struct_uninitContext *context) {
-    auto *struct_type = std::any_cast<Node *>(visit(context->struct_type()));
-    auto id = context->ID()->getText();
+// std::any Builder::visitStruct_uninit(CParser::Struct_uninitContext *context)
+// {
+//     auto *struct_type = std::any_cast<Node *>(visit(context->struct_type()));
+//     auto id = context->ID()->getText();
 
-    return static_cast<Node *>(
-        program_.create_node<StructUninit>(struct_type, id));
-}
+//     return static_cast<Node *>(
+//         program_.create_node<StructUninit>(struct_type, id));
+// }
 
-std::any Builder::visitStruct_element_access(
-    CParser::Struct_element_accessContext *context) {
-    Childs lvalue_refer_stream;
-    for (auto *child : context->children) {
-        lvalue_refer_stream.push_back(std::any_cast<Node *>(visit(child)));
-    }
+// std::any Builder::visitStruct_element_access(
+//     CParser::Struct_element_accessContext *context) {
+//     Childs lvalue_refer_stream;
+//     for (auto *child : context->children) {
+//         lvalue_refer_stream.push_back(std::any_cast<Node *>(visit(child)));
+//     }
 
-    return static_cast<Node *>(
-        program_.create_node<StructElementAccess>(lvalue_refer_stream));
-}
+//     return static_cast<Node *>(
+//         program_.create_node<StructElementAccess>(lvalue_refer_stream));
+// }
 
-std::any Builder::visitStruct_type(CParser::Struct_typeContext *context) {
-    bool is_const = static_cast<bool>(context->CONST());
-    auto id = context->ID()->getText();
+// std::any Builder::visitStruct_type(CParser::Struct_typeContext *context) {
+//     bool is_const = static_cast<bool>(context->CONST());
+//     auto id = context->ID()->getText();
 
-    return static_cast<Node *>(program_.create_node<StructType>(is_const, id));
-}
+//     return static_cast<Node *>(program_.create_node<StructType>(is_const,
+//     id));
+// }
 
-std::any Builder::visitStruct_element_refer(
-    CParser::Struct_element_referContext *context) {
-    auto element_refer = context->children[0]->getText();
+// std::any Builder::visitStruct_element_refer(
+//     CParser::Struct_element_referContext *context) {
+//     auto element_refer = context->children[0]->getText();
 
-    return static_cast<Node *>(
-        program_.create_node<StructElementRefer>(element_refer));
-}
+//     return static_cast<Node *>(
+//         program_.create_node<StructElementRefer>(element_refer));
+// }
 
 // Array
 
 std::any Builder::visitArray_uninit(CParser::Array_uninitContext *context) {
-    Node *sign = nullptr;
-    if (context->sign() != nullptr) {
-        sign = std::any_cast<Node *>(visit(context->sign()));
-    }
-    auto *type = std::any_cast<Node *>(visit(context->base_type()));
+    auto *type = std::any_cast<Node *>(visit(context->array_type()));
     auto id = context->ID()->getText();
     auto *size = std::any_cast<Node *>(visit(context->value()));
 
     return static_cast<Node *>(
-        program_.create_node<ArrayUninit>(sign, type, id, size));
+        program_.create_node<ArrayUninit>(type, id, size));
 }
 
 std::any Builder::visitArray_element_access(
@@ -346,29 +350,27 @@ Builder::visitPostfix_decrement(CParser::Postfix_decrementContext *context) {
 
 // Types
 
+std::any Builder::visitArray_type(CParser::Array_typeContext *context) {
+    bool is_const = static_cast<bool>(context->CONST());
+    auto *type = std::any_cast<Node *>(visit(context->base_type()));
+
+    return static_cast<Node *>(program_.create_node<ArrayType>(is_const, type));
+}
+
 std::any Builder::visitPointer_type(CParser::Pointer_typeContext *context) {
     bool is_const = static_cast<bool>(context->CONST());
-    Node *sign = nullptr;
-    if (context->sign() != nullptr) {
-        sign = std::any_cast<Node *>(visit(context->sign()));
-    }
     auto *type = std::any_cast<Node *>(visit(context->any_type()));
     std::size_t level = context->MULTIP().size();
 
     return static_cast<Node *>(
-        program_.create_node<PointerType>(is_const, sign, type, level));
+        program_.create_node<PointerType>(is_const, type, level));
 }
 
 std::any Builder::visitData_type(CParser::Data_typeContext *context) {
     bool is_const = static_cast<bool>(context->CONST());
-    Node *sign = nullptr;
-    if (context->sign() != nullptr) {
-        sign = std::any_cast<Node *>(visit(context->sign()));
-    }
     auto *type = std::any_cast<Node *>(visit(context->base_type()));
 
-    return static_cast<Node *>(
-        program_.create_node<DataType>(is_const, sign, type));
+    return static_cast<Node *>(program_.create_node<DataType>(is_const, type));
 }
 
 std::any Builder::visitBase_type(CParser::Base_typeContext *context) {
@@ -379,12 +381,6 @@ std::any Builder::visitBase_type(CParser::Base_typeContext *context) {
 
 std::any Builder::visitVoid_type(CParser::Void_typeContext * /*context*/) {
     return static_cast<Node *>(program_.create_node<VoidType>());
-}
-
-std::any Builder::visitSign(CParser::SignContext *context) {
-    auto sign = context->children[0]->getText();
-
-    return static_cast<Node *>(program_.create_node<Sign>(sign));
 }
 
 // Literals
