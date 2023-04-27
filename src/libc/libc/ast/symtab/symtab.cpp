@@ -38,13 +38,13 @@ void Symtab::add_sym(std::unique_ptr<Symbol> &&symbol) {
                 }
             }
             if (hash == initial_hash) {
-                throw SymtabException("overflow error");
+                throw Overflow("overflow error");
             }
         } else {
             auto *prev = table_.at(hash);
             while (prev != nullptr && prev->sym_->get_scope() != nullptr) {
                 if (prev->sym_->get_scope() == symbol->get_scope()) {
-                    throw SymtabException(
+                    throw SymbolRedefinition(
                         symbol->get_name() + "is already defined");
                 }
                 prev = prev->prev_;

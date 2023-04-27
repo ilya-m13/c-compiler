@@ -63,7 +63,8 @@ void Builder::visit(FunctionCall &node) {
         }
     }
     if (stack_node == nullptr) {
-        throw SymtabException("Reference to an undefined symbol " + node.id());
+        throw UndefinedReference(
+            "Reference to an undefined symbol " + node.id());
     }
 
     for (auto *arg : node.args()) {
@@ -401,7 +402,7 @@ void Builder::visit(VoidType &node) {
 void Builder::check_sym_access(const std::string &name) const {
     auto *stack_node = symtab_.find_sym(name);
     if (stack_node == nullptr) {
-        throw SymtabException("Reference to an undefined symbol " + name);
+        throw UndefinedReference("Reference to an undefined symbol " + name);
     }
     for (auto *cur_scope = scopes_.top(); cur_scope != nullptr;
          cur_scope = cur_scope->get_enclosing_scope()) {
@@ -416,14 +417,14 @@ void Builder::check_sym_access(const std::string &name) const {
             }
         }
     }
-    throw SymtabException("Reference to an undefined symbol " + name);
+    throw UndefinedReference("Reference to an undefined symbol " + name);
 }
 
 void Builder::check_sym_creation(const std::string &name) const {
     auto symbols = scopes_.top()->get_symbols();
     auto it = symbols.find(name);
     if (it != symbols.end()) {
-        throw SymtabException(name + " symbol already defined");
+        throw SymbolRedefinition(name + " symbol already defined");
     }
 }
 

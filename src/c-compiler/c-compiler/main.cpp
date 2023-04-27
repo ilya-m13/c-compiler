@@ -51,7 +51,9 @@ int main(int argc, char **argv) {
             try {
                 auto symtab = c::get_symtab(parser_result.program_);
                 c::dump_symtab(symtab, std::cout);
-            } catch (const c::ast::symtab::SymtabException &ex) {
+            } catch (const c::ast::symtab::UndefinedReference &ex) {
+                std::cout << ex.what() << '\n';
+            } catch (const c::ast::symtab::SymbolRedefinition &ex) {
                 std::cout << ex.what() << '\n';
             }
         }

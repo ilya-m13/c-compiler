@@ -59,7 +59,7 @@ void dump_symtab(const ast::symtab::Symtab &symtab, std::ostream &os) {
                   sym->get_scope()->get_enclosing_path_to_root())
            << "  ";
         os << "sym-num-in-scope=" << sym->get_scope()->get_number_of_symbols()
-           << "\n\n";
+           << "\n";
     }
 }
 

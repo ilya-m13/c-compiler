@@ -12,7 +12,15 @@ namespace c::ast::symtab {
 
 const std::size_t c_table_size = 256;
 
-class SymtabException : public std::runtime_error {
+class UndefinedReference : public std::runtime_error {
+  public:
+    using std::runtime_error::runtime_error;
+};
+class SymbolRedefinition : public std::runtime_error {
+  public:
+    using std::runtime_error::runtime_error;
+};
+class Overflow : public std::runtime_error {
   public:
     using std::runtime_error::runtime_error;
 };
