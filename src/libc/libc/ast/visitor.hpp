@@ -27,15 +27,15 @@ class Visitor {
     virtual void visit(ContinueStatement &node) = 0;
     virtual void visit(BreakStatement &node) = 0;
 
-    // Struct
+    // // Struct
 
-    virtual void visit(StructDeclaration &node) = 0;
-    virtual void visit(StructDefinition &node) = 0;
-    virtual void visit(StructInit &node) = 0;
-    virtual void visit(StructUninit &node) = 0;
-    virtual void visit(StructElementAccess &node) = 0;
-    virtual void visit(StructType &node) = 0;
-    virtual void visit(StructElementRefer &node) = 0;
+    // virtual void visit(StructDeclaration &node) = 0;
+    // virtual void visit(StructDefinition &node) = 0;
+    // virtual void visit(StructInit &node) = 0;
+    // virtual void visit(StructUninit &node) = 0;
+    // virtual void visit(StructElementAccess &node) = 0;
+    // virtual void visit(StructType &node) = 0;
+    // virtual void visit(StructElementRefer &node) = 0;
 
     // Array
 

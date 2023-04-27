@@ -40,20 +40,19 @@ class Builder final : public CParserBaseVisitor {
     std::any
     visitBreak_statement(CParser::Break_statementContext *context) override;
 
-    // Struct
+    // // Struct
 
-    std::any visitStruct_declaration(
-        CParser::Struct_declarationContext *context) override;
-    std::any
-    visitStruct_definition(CParser::Struct_definitionContext *context) override;
-    std::any visitStruct_init(CParser::Struct_initContext *context) override;
-    std::any
-    visitStruct_uninit(CParser::Struct_uninitContext *context) override;
-    std::any visitStruct_element_access(
-        CParser::Struct_element_accessContext *context) override;
-    std::any visitStruct_type(CParser::Struct_typeContext *context) override;
-    std::any visitStruct_element_refer(
-        CParser::Struct_element_referContext *context) override;
+    // std::any visitStruct_declaration(
+    //     CParser::Struct_declarationContext *context) override;
+    // std::any
+    // visitStruct_definition(CParser::Struct_definitionContext *context)
+    // override; std::any visitStruct_init(CParser::Struct_initContext *context)
+    // override; std::any visitStruct_uninit(CParser::Struct_uninitContext
+    // *context) override; std::any visitStruct_element_access(
+    //     CParser::Struct_element_accessContext *context) override;
+    // std::any visitStruct_type(CParser::Struct_typeContext *context) override;
+    // std::any visitStruct_element_refer(
+    //     CParser::Struct_element_referContext *context) override;
 
     // Array
 

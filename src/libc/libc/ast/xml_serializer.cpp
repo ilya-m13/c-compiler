@@ -143,68 +143,68 @@ void XmlSerializer::visit(BreakStatement & /*node*/) {
     append_child("break");
 }
 
-// Struct
+// // Struct
 
-void XmlSerializer::visit(StructDeclaration &node) {
-    auto struct_declaration_node = append_child("struct-declaration");
-    nodes_.push(struct_declaration_node);
-    append_attribute("name", (node.id()).c_str());
-    nodes_.pop();
-}
+// void XmlSerializer::visit(StructDeclaration &node) {
+//     auto struct_declaration_node = append_child("struct-declaration");
+//     nodes_.push(struct_declaration_node);
+//     append_attribute("name", (node.id()).c_str());
+//     nodes_.pop();
+// }
 
-void XmlSerializer::visit(StructDefinition &node) {
-    auto struct_definition_node = append_child("struct-definition");
-    nodes_.push(struct_definition_node);
+// void XmlSerializer::visit(StructDefinition &node) {
+//     auto struct_definition_node = append_child("struct-definition");
+//     nodes_.push(struct_definition_node);
 
-    append_attribute("name", (node.id()).c_str());
+//     append_attribute("name", (node.id()).c_str());
 
-    if (!node.object().empty()) {
-        append_attribute("object", node.object().c_str());
-    }
+//     if (!node.object().empty()) {
+//         append_attribute("object", node.object().c_str());
+//     }
 
-    for (auto *child : node.data_uninit()) {
-        auto member_node = append_child("member");
-        nodes_.push(member_node);
-        child->accept(*this);
-        nodes_.pop();
-    }
+//     for (auto *child : node.data_uninit()) {
+//         auto member_node = append_child("member");
+//         nodes_.push(member_node);
+//         child->accept(*this);
+//         nodes_.pop();
+//     }
 
-    nodes_.pop();
-}
+//     nodes_.pop();
+// }
 
-void XmlSerializer::visit(StructInit &node) {
-    node.struct_type()->accept(*this);
-    append_attribute("name", node.id().c_str());
+// void XmlSerializer::visit(StructInit &node) {
+//     node.struct_type()->accept(*this);
+//     append_attribute("name", node.id().c_str());
 
-    for (auto *value : node.values()) {
-        auto value_node = append_child("value");
-        nodes_.push(value_node);
-        value->accept(*this);
-        nodes_.pop();
-    }
-}
+//     for (auto *value : node.values()) {
+//         auto value_node = append_child("value");
+//         nodes_.push(value_node);
+//         value->accept(*this);
+//         nodes_.pop();
+//     }
+// }
 
-void XmlSerializer::visit(StructUninit &node) {
-    node.struct_type()->accept(*this);
-    append_attribute("name", node.id().c_str());
-}
+// void XmlSerializer::visit(StructUninit &node) {
+//     node.struct_type()->accept(*this);
+//     append_attribute("name", node.id().c_str());
+// }
 
-void XmlSerializer::visit(StructElementAccess &node) {
-    for (auto *child : node.lvalue_refer_stream()) {
-        child->accept(*this);
-    }
-}
+// void XmlSerializer::visit(StructElementAccess &node) {
+//     for (auto *child : node.lvalue_refer_stream()) {
+//         child->accept(*this);
+//     }
+// }
 
-void XmlSerializer::visit(StructType &node) {
-    if (node.is_const()) {
-        append_attribute("const", "true");
-    }
-    append_attribute("type", node.id().c_str());
-}
+// void XmlSerializer::visit(StructType &node) {
+//     if (node.is_const()) {
+//         append_attribute("const", "true");
+//     }
+//     append_attribute("type", node.id().c_str());
+// }
 
-void XmlSerializer::visit(StructElementRefer &node) {
-    append_text(node.element_refer().c_str());
-}
+// void XmlSerializer::visit(StructElementRefer &node) {
+//     append_text(node.element_refer().c_str());
+// }
 
 // Array
 

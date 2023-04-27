@@ -8,39 +8,35 @@ newline
 #include <stdio.h>
 #include <string.h>
 
-struct String {
-    char *str_;
-    int len_;
-};
-
 int main(int argc, char **argv) {
     if (argc != 3) {
-        perror("./main <str> <substr>\n");
+        printf("./main <str> <substr>\n");
+        return 1;
     }
 
-    struct String str = {argv[1], strlen(argv[1])};
-    struct String substr = {argv[2], strlen(argv[2])};
+    char *str = argv[1];
+    char *substr = argv[2];
 
-    if (str.len_ < substr.len_) {
+    if (strlen(str) < strlen(substr)) {
         printf("str < substr\n");
         return 1;
     }
 
-    for (int i = 0; i < str.len_; ++i) {
-        if (str.str_[i] == substr.str_[0]) {
+    for (int i = 0; i < strlen(str); ++i) {
+        if (str[i] == substr[0]) {
             int equal_len_substr = 1;
-            for (; equal_len_substr < substr.len_; ++equal_len_substr) {
-                if (str.str_[i + equal_len_substr] !=
-                    substr.str_[equal_len_substr]) {
+            for (; equal_len_substr < strlen(substr); ++equal_len_substr) {
+                if (str[i + equal_len_substr] != substr[equal_len_substr]) {
                     break;
                 }
             }
-            printf("%d %d\n", equal_len_substr, substr.len_);
-            if (equal_len_substr == substr.len_) {
+            printf("%d %ld\n", equal_len_substr, strlen(substr));
+            if (equal_len_substr == strlen(substr)) {
                 printf(
-                    "The substring is included in the string from %ld to %ld\n",
+                    "The substring is included in the string from %d to %ld\n",
                     i,
-                    i + substr.len_ - 1);
+                    i + strlen(substr) - 1);
+                return 0;
             }
             i += equal_len_substr - 1;
         }

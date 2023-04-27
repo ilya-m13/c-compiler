@@ -95,9 +95,15 @@ void Builder::visit(ForStatement &node) {
     std::size_t prev_insertion_order_ = insertion_order_;
     insertion_order_ = 0;
     scopes_.push(local_scope);
-    node.for_data_using()->accept(*this);
-    node.truth_value()->accept(*this);
-    node.value()->accept(*this);
+    if (node.for_data_using() != nullptr) {
+        node.for_data_using()->accept(*this);
+    }
+    if (node.truth_value() != nullptr) {
+        node.truth_value()->accept(*this);
+    }
+    if (node.value() != nullptr) {
+        node.value()->accept(*this);
+    }
     for (auto *action : node.actions()) {
         action->accept(*this);
     }
@@ -123,13 +129,151 @@ void Builder::visit(IfStatement &node) {
     insertion_order_ = prev_insertion_order_;
 }
 
-// Struct
+// // Struct
+
+// void Builder::visit(StructDeclaration &node) {
+//     Scope *top = scopes_.empty() ? nullptr : scopes_.top();
+//     for (auto *stack_node = symtab_.find_sym(node.id()); stack_node !=
+//     nullptr;
+//          stack_node = stack_node->prev_) {
+//         if (top == stack_node->sym_->get_scope()) {
+//             if (auto *str_sym =
+//                     dynamic_cast<StructSymbol *>(stack_node->sym_.get());
+//                 str_sym == nullptr) {
+//                 throw SymtabException(node.id() + " symbol already defined");
+//             }
+//             return;
+//         }
+//     }
+
+//     auto unique_ptr = std::make_unique<StructSymbol>(node.id());
+//     auto *str_sym = unique_ptr.get();
+//     symtab_.add_sym(std::move(unique_ptr));
+
+//     str_sym->set_insertion_order_num(insertion_order_++);
+// }
+
+// void Builder::visit(StructDefinition &node) {
+//     Scope *top = scopes_.empty() ? nullptr : scopes_.top();
+//     StructSymbol *str = nullptr;
+//     for (auto *stack_node = symtab_.find_sym(node.id()); stack_node !=
+//     nullptr;
+//          stack_node = stack_node->prev_) {
+//         if (top == stack_node->sym_->get_scope()) {
+//             str = dynamic_cast<StructSymbol *>(stack_node->sym_.get());
+//             if (str != nullptr && str->get_number_of_symbols() != 0) {
+//                 throw SymtabException(node.id() + " symbol already defined");
+//             }
+//             break;
+//         }
+//     }
+
+//     if (str == nullptr) {
+//         auto unique_ptr = std::make_unique<StructSymbol>(node.id());
+//         str = unique_ptr.get();
+//         symtab_.add_sym(std::move(unique_ptr));
+
+//         str->set_insertion_order_num(insertion_order_++);
+//     }
+
+//     std::size_t prev_insertion_order_ = insertion_order_;
+//     insertion_order_ = 0;
+//     scopes_.push(str);
+//     is_struct_symbols_ = true;
+//     for (auto *child : node.data_uninit()) {
+//         child->accept(*this);
+//     }
+//     is_struct_symbols_ = false;
+//     scopes_.pop();
+//     insertion_order_ = prev_insertion_order_;
+// }
+
+// void Builder::visit(StructInit &node) {
+//     check_sym_creation(node.id());
+
+//     auto unique_ptr = std::make_unique<VariableSymbol>(node.id());
+//     auto *var = unique_ptr.get();
+//     symtab_.add_sym(std::move(unique_ptr));
+//     scopes_.top()->define(var);
+
+//     node.struct_type()->accept(*this);
+//     if (auto *str_sym = dynamic_cast<StructSymbol *>(type_.get());
+//         str_sym != nullptr &&
+//         str_sym->get_number_of_symbols() > node.values().size()) {
+//         throw SymtabException("many values at initialization " + node.id());
+//     }
+//     var->set_type(type_);
+//     var->set_insertion_order_num(insertion_order_++);
+
+//     for (auto *value : node.values()) {
+//         value->accept(*this);
+//     }
+// }
+
+// void Builder::visit(StructUninit &node) {
+//     std::unique_ptr<VariableSymbol> unique_ptr;
+//     if (is_struct_symbols_) {
+//         unique_ptr = std::make_unique<FieldSymbol>(node.id());
+//     } else {
+//         check_sym_creation(node.id());
+//         unique_ptr = std::make_unique<VariableSymbol>(node.id());
+//     }
+//     auto *var = unique_ptr.get();
+//     symtab_.add_sym(std::move(unique_ptr));
+//     scopes_.top()->define(var);
+
+//     node.struct_type()->accept(*this);
+//     var->set_type(type_);
+//     var->set_insertion_order_num(insertion_order_++);
+// }
+
+// void Builder::visit(StructElementAccess &node) {
+//     const auto &refer_stream = node.lvalue_refer_stream();
+//     refer_stream[0]->accept(*this);
+//     auto *str_sym = dynamic_cast<StructSymbol *>(sym_->get_type());
+//     is_struct_access_ = true;
+//     for (std::size_t i = 2; i < node.lvalue_refer_stream().size(); i += 2) {
+//         refer_stream[i]->accept(*this);
+//         auto *ref_sym =
+//             dynamic_cast<VariableSymbol *>(str_sym->get_symbol(sym_name_));
+//         if (ref_sym == nullptr) {
+//             throw SymtabException(
+//                 "Reference to an undefined symbol " + sym_name_);
+//         }
+//         str_sym = dynamic_cast<StructSymbol *>(ref_sym->get_type());
+//         if (i + 1 != node.lvalue_refer_stream().size() && str_sym == nullptr)
+//         {
+//             throw SymtabException("invalid referral stream");
+//         }
+//     }
+//     is_struct_access_ = false;
+// }
+
+// void Builder::visit(StructType &node) {
+//     for (auto *stack_node = symtab_.find_sym(node.id()); stack_node !=
+//     nullptr;
+//          stack_node = stack_node->prev_) {
+//         if (auto *str_sym =
+//                 dynamic_cast<StructSymbol *>(stack_node->sym_.get());
+//             str_sym != nullptr && str_sym->get_name() == node.id()) {
+//             type_.reset(str_sym);
+//             return;
+//         }
+//     }
+//     throw SymtabException("Reference to an undefined type " + node.id());
+// }
 
 // Array
 
 void Builder::visit(ArrayUninit &node) {
+    // std::unique_ptr<VariableSymbol> unique_ptr;
+    // if (is_struct_symbols_) {
+    //     unique_ptr = std::make_unique<FieldSymbol>(node.id());
+    // } else {
+    //     check_sym_creation(node.id());
+    //     unique_ptr = std::make_unique<VariableSymbol>(node.id());
+    // }
     check_sym_creation(node.id());
-
     auto unique_ptr = std::make_unique<VariableSymbol>(node.id());
     auto *var = unique_ptr.get();
     symtab_.add_sym(std::move(unique_ptr));
@@ -143,6 +287,11 @@ void Builder::visit(ArrayUninit &node) {
 }
 
 void Builder::visit(ArrayElementAccess &node) {
+    // if (is_struct_access_) {
+    //     sym_name_ = node.id();
+    // } else {
+    //     sym_ = check_sym_access(node.id());
+    // }
     check_sym_access(node.id());
 
     node.idx()->accept(*this);
@@ -166,8 +315,14 @@ void Builder::visit(VariableInit &node) {
 }
 
 void Builder::visit(VariableUninit &node) {
+    // std::unique_ptr<VariableSymbol> unique_ptr;
+    // if (is_struct_symbols_) {
+    //     unique_ptr = std::make_unique<FieldSymbol>(node.id());
+    // } else {
+    //     check_sym_creation(node.id());
+    //     unique_ptr = std::make_unique<VariableSymbol>(node.id());
+    // }
     check_sym_creation(node.id());
-
     auto unique_ptr = std::make_unique<VariableSymbol>(node.id());
     auto *var = unique_ptr.get();
     symtab_.add_sym(std::move(unique_ptr));
@@ -179,6 +334,11 @@ void Builder::visit(VariableUninit &node) {
 }
 
 void Builder::visit(VariableAccess &node) {
+    // if (is_struct_access_) {
+    //     sym_name_ = node.id();
+    // } else {
+    //     sym_ = check_sym_access(node.id());
+    // }
     check_sym_access(node.id());
 }
 

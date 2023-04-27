@@ -32,15 +32,15 @@ class XmlSerializer final : public Visitor {
     void visit(ContinueStatement &node) override;
     void visit(BreakStatement &node) override;
 
-    // Struct
+    // // Struct
 
-    void visit(StructDeclaration &node) override;
-    void visit(StructDefinition &node) override;
-    void visit(StructInit &node) override;
-    void visit(StructUninit &node) override;
-    void visit(StructElementAccess &node) override;
-    void visit(StructType &node) override;
-    void visit(StructElementRefer &node) override;
+    // void visit(StructDeclaration &node) override;
+    // void visit(StructDefinition &node) override;
+    // void visit(StructInit &node) override;
+    // void visit(StructUninit &node) override;
+    // void visit(StructElementAccess &node) override;
+    // void visit(StructType &node) override;
+    // void visit(StructElementRefer &node) override;
 
     // Array
 

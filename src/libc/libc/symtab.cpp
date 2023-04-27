@@ -41,13 +41,25 @@ void dump_symtab(const ast::symtab::Symtab &symtab, std::ostream &os) {
             os << "const=" << type->is_const() << "  ";
             os << "param-num=" << func->get_number_of_param() << "  ";
             os << "sym-num=" << func->get_number_of_symbols() << "  ";
-        }
+        } /* else if (auto *str = dynamic_cast<ast::symtab::StructSymbol
+        *>(sym); str != nullptr) { os << "type=" << str->get_type() << "\n"; for
+        (const auto &[name, sym_ptr] : str->get_symbols()) { auto *var_ptr =
+                    dynamic_cast<ast::symtab::VariableSymbol *>(sym_ptr);
+                os << "name=" << var_ptr->get_name() << "  ";
+                os << "in_order=" << var_ptr->get_insertion_order_num() << "  ";
+                auto *type = var_ptr->get_type();
+                os << "type-name=" << type->get_name() << "  ";
+                os << "type=" << type->get_type() << "  ";
+                os << "const=" << type->is_const() << "\n";
+            }
+            continue;
+        } */
         os << "root-path="
            << convert_root_path_to_string(
                   sym->get_scope()->get_enclosing_path_to_root())
            << "  ";
-        os << "syn-num-in-scope=" << sym->get_scope()->get_number_of_symbols()
-           << "\n";
+        os << "sym-num-in-scope=" << sym->get_scope()->get_number_of_symbols()
+           << "\n\n";
     }
 }
 

@@ -29,13 +29,12 @@ class Builder final : public Visitor {
 
     // Struct
 
-    void visit(StructDeclaration & /*node*/) override {}
-    void visit(StructDefinition & /*node*/) override {}
-    void visit(StructInit & /*node*/) override {}
-    void visit(StructUninit & /*node*/) override {}
-    void visit(StructElementAccess & /*node*/) override {}
-    void visit(StructType & /*node*/) override {}
-    void visit(StructElementRefer & /*node*/) override {}
+    // void visit(StructDeclaration &node) override;
+    // void visit(StructDefinition &node) override;
+    // void visit(StructInit &node) override;
+    // void visit(StructUninit &node) override;
+    // void visit(StructElementAccess &node) override;
+    // void visit(StructType &node) override;
 
     // Array
 
@@ -66,6 +65,7 @@ class Builder final : public Visitor {
     void visit(VoidType &node) override;
 
   private:
+    // void visit(StructElementRefer & /*node*/) override {}
     void visit(AssignmentOperator & /*node*/) override {}
     void visit(ArithmeticOperator & /*node*/) override {}
     void visit(RelationalOperator & /*node*/) override {}
@@ -86,6 +86,11 @@ class Builder final : public Visitor {
     std::string type_name_;
 
     std::size_t insertion_order_{0};
+
+    // bool is_struct_symbols_{false};
+    // std::string sym_name_;
+    // VariableSymbol *sym_{nullptr};
+    // bool is_struct_access_{false};
 };
 
 } // namespace c::ast::symtab::detail

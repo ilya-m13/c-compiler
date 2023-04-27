@@ -1,19 +1,6 @@
 <?xml version="1.0"?>
 <Program>
   <header-file>header.h</header-file>
-  <struct-declaration name="Struct" />
-  <struct-definition name="Struct">
-    <member type="int" name="data_" />
-    <member type="int" level="**" name="data_" />
-    <member type="Struct" name="data_" />
-    <member type="Struct" level="**" name="data_" />
-  </struct-definition>
-  <struct-definition name="Struct">
-    <member type="int" name="data_" />
-  </struct-definition>
-  <struct-definition name="Struct" object="object">
-    <member type="int" name="data_" />
-  </struct-definition>
   <function type="int" name="id">
     <actions />
   </function>
@@ -24,18 +11,10 @@
   <function type="void" name="id">
     <arg type="int" name="arg1" />
     <arg type="int" level="*" name="arg2" />
-    <arg type="Struct" name="arg3" />
-    <arg type="Struct" name="arg4" />
-    <arg type="void" level="*" name="arg5" />
+    <arg type="void" level="*" name="arg3" />
     <actions />
   </function>
   <function type="void" level="*" name="id">
-    <actions />
-  </function>
-  <function type="Struct" name="id">
-    <actions />
-  </function>
-  <function type="Struct" level="*" name="id">
     <actions />
   </function>
   <function type="int" name="main">
@@ -43,8 +22,6 @@
       <call name="call">
         <arg>var_</arg>
         <arg>array_[var_]</arg>
-        <arg>obj_.member_</arg>
-        <arg>obj_[var_].member_[var_]</arg>
         <arg>"str"</arg>
         <arg>1</arg>
         <arg>
@@ -53,22 +30,21 @@
           </call>
         </arg>
         <arg>++var_</arg>
-        <arg>var_var_--array_[var_]++var_obj_.member_[var_]<call name="call">
+        <arg>var_var_--array_[var_]++var_var_<call name="call">
             <arg>arg1_</arg>
             <arg>arg2</arg>
           </call>1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||</arg>
         <arg>
-          <variable-writing>var_var_var_var_var_--array_[var_]++var_obj_.member_[var_]<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||*=+==</variable-writing>
+          <variable-writing>var_var_var_var_var_--array_[var_]++var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||*=+==</variable-writing>
         </arg>
       </call>
       <variable-writing>++var_</variable-writing>
       <variable-writing>var_[var_]++</variable-writing>
-      <variable-writing>--obj_.member_[var_]</variable-writing>
-      <variable-writing>var_var_var_var_var_--array_[var_]++var_obj_.member_[var_]<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||*=+==</variable-writing>
-      <data-create const="true" type="int" name="var_">var_var_--array_[var_]++var_obj_.member_[var_]<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||</data-create>
+      <variable-writing>var_var_var_var_var_--array_[var_]++var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||*=+==</variable-writing>
+      <data-create const="true" type="int" name="var_">var_var_--array_[var_]++var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||</data-create>
       <data-create type="char" name="var_" />
       <data-create type="float" name="var_">var_</data-create>
-      <data-create const="true" type="double" level="*" name="p_">var_var_--array_[var_]++var_obj_.member_[var_]<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||</data-create>
+      <data-create const="true" type="double" level="*" name="p_">var_var_--array_[var_]++var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||</data-create>
       <data-create type="short" level="**" name="p_" />
       <data-create type="long" level="*" name="p_" />
       <data-create type="void" level="*" name="p_">var_</data-create>
@@ -80,14 +56,6 @@
           <variable-writing>var_var_1*=</variable-writing>
         </size>
       </data-create>
-      <data-create type="Struct" name="var_">
-        <value>var_1+</value>
-        <value>
-          <variable-writing>var_var_1*=</variable-writing>
-        </value>
-      </data-create>
-      <data-create type="Struct" name="var_" />
-      <data-create type="Struct" level="*" name="p">var_1+</data-create>
       <return>var_1+</return>
       <for>
         <actions />

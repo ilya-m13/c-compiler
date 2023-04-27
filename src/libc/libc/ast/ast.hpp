@@ -225,123 +225,123 @@ class BreakStatement final : public Node {
     void accept(Visitor &visitor) override;
 };
 
-// Struct
+// // Struct
 
-class StructDeclaration final : public Node {
-  public:
-    explicit StructDeclaration(std::string id) : id_(std::move(id)) {}
-    const std::string &id() const {
-        return id_;
-    }
-    void accept(Visitor &visitor) override;
+// class StructDeclaration final : public Node {
+//   public:
+//     explicit StructDeclaration(std::string id) : id_(std::move(id)) {}
+//     const std::string &id() const {
+//         return id_;
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    std::string id_;
-};
+//   private:
+//     std::string id_;
+// };
 
-class StructDefinition final : public Node {
-  public:
-    StructDefinition(std::string id, std::string object, Childs data_uninit)
-        : id_(std::move(id)), object_(std::move(object)),
-          data_uninit_(std::move(data_uninit)) {}
-    const std::string &id() const {
-        return id_;
-    }
-    const std::string &object() const {
-        return object_;
-    }
-    const Childs &data_uninit() const {
-        return data_uninit_;
-    }
-    void accept(Visitor &visitor) override;
+// class StructDefinition final : public Node {
+//   public:
+//     StructDefinition(std::string id, std::string object, Childs data_uninit)
+//         : id_(std::move(id)), object_(std::move(object)),
+//           data_uninit_(std::move(data_uninit)) {}
+//     const std::string &id() const {
+//         return id_;
+//     }
+//     const std::string &object() const {
+//         return object_;
+//     }
+//     const Childs &data_uninit() const {
+//         return data_uninit_;
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    std::string id_;
-    std::string object_;
-    Childs data_uninit_;
-};
+//   private:
+//     std::string id_;
+//     std::string object_;
+//     Childs data_uninit_;
+// };
 
-class StructInit final : public Node {
-  public:
-    StructInit(Node *struct_type, std::string id, Childs values)
-        : struct_type_(struct_type), id_(std::move(id)),
-          values_(std::move(values)) {}
-    Node *struct_type() const {
-        return struct_type_;
-    }
-    const std::string &id() const {
-        return id_;
-    }
-    const Childs &values() const {
-        return values_;
-    }
-    void accept(Visitor &visitor) override;
+// class StructInit final : public Node {
+//   public:
+//     StructInit(Node *struct_type, std::string id, Childs values)
+//         : struct_type_(struct_type), id_(std::move(id)),
+//           values_(std::move(values)) {}
+//     Node *struct_type() const {
+//         return struct_type_;
+//     }
+//     const std::string &id() const {
+//         return id_;
+//     }
+//     const Childs &values() const {
+//         return values_;
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    Node *struct_type_;
-    std::string id_;
-    Childs values_;
-};
+//   private:
+//     Node *struct_type_;
+//     std::string id_;
+//     Childs values_;
+// };
 
-class StructUninit final : public Node {
-  public:
-    StructUninit(Node *struct_type, std::string id)
-        : struct_type_(struct_type), id_(std::move(id)) {}
-    Node *struct_type() const {
-        return struct_type_;
-    }
-    const std::string &id() const {
-        return id_;
-    }
-    void accept(Visitor &visitor) override;
+// class StructUninit final : public Node {
+//   public:
+//     StructUninit(Node *struct_type, std::string id)
+//         : struct_type_(struct_type), id_(std::move(id)) {}
+//     Node *struct_type() const {
+//         return struct_type_;
+//     }
+//     const std::string &id() const {
+//         return id_;
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    Node *struct_type_;
-    std::string id_;
-};
+//   private:
+//     Node *struct_type_;
+//     std::string id_;
+// };
 
-class StructElementAccess final : public Node {
-  public:
-    explicit StructElementAccess(Childs lvalue_refer_stream)
-        : lvalue_refer_stream_(std::move(lvalue_refer_stream)) {}
-    const Childs &lvalue_refer_stream() const {
-        return lvalue_refer_stream_;
-    }
-    void accept(Visitor &visitor) override;
+// class StructElementAccess final : public Node {
+//   public:
+//     explicit StructElementAccess(Childs lvalue_refer_stream)
+//         : lvalue_refer_stream_(std::move(lvalue_refer_stream)) {}
+//     const Childs &lvalue_refer_stream() const {
+//         return lvalue_refer_stream_;
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    Childs lvalue_refer_stream_;
-};
+//   private:
+//     Childs lvalue_refer_stream_;
+// };
 
-class StructType final : public Node {
-  public:
-    StructType(bool is_const, std::string id)
-        : is_const_(is_const), id_(std::move(id)) {}
-    bool is_const() const {
-        return is_const_;
-    }
-    const std::string &id() const {
-        return id_;
-    }
-    void accept(Visitor &visitor) override;
+// class StructType final : public Node {
+//   public:
+//     StructType(bool is_const, std::string id)
+//         : is_const_(is_const), id_(std::move(id)) {}
+//     bool is_const() const {
+//         return is_const_;
+//     }
+//     const std::string &id() const {
+//         return id_;
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    bool is_const_;
-    std::string id_;
-};
+//   private:
+//     bool is_const_;
+//     std::string id_;
+// };
 
-class StructElementRefer final : public Node {
-  public:
-    explicit StructElementRefer(std::string element_refer)
-        : element_refer_(std::move(element_refer)) {}
-    const std::string &element_refer() const {
-        return element_refer_;
-    }
-    void accept(Visitor &visitor) override;
+// class StructElementRefer final : public Node {
+//   public:
+//     explicit StructElementRefer(std::string element_refer)
+//         : element_refer_(std::move(element_refer)) {}
+//     const std::string &element_refer() const {
+//         return element_refer_;
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    std::string element_refer_;
-};
+//   private:
+//     std::string element_refer_;
+// };
 
 // Array
 

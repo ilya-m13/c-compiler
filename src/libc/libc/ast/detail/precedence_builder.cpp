@@ -112,9 +112,9 @@ void PrecedenceBuilder::visit(ArrayElementAccess &node) {
     rpn_.push_back(&node);
 }
 
-void PrecedenceBuilder::visit(StructElementAccess &node) {
-    rpn_.push_back(&node);
-}
+// void PrecedenceBuilder::visit(StructElementAccess &node) {
+//     rpn_.push_back(&node);
+// }
 
 void PrecedenceBuilder::visit(VariableAccess &node) {
     rpn_.push_back(&node);

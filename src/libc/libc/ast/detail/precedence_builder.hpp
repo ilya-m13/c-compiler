@@ -26,7 +26,7 @@ class PrecedenceBuilder final : public Visitor {
 
     void visit(FunctionCall &node) override;
     void visit(ArrayElementAccess &node) override;
-    void visit(StructElementAccess &node) override;
+    // void visit(StructElementAccess &node) override;
     void visit(VariableAccess &node) override;
 
     void visit(StringLiteral &node) override;
@@ -44,12 +44,12 @@ class PrecedenceBuilder final : public Visitor {
     void visit(IfStatement & /*node*/) override {}
     void visit(ContinueStatement & /*node*/) override {}
     void visit(BreakStatement & /*node*/) override {}
-    void visit(StructDeclaration & /*node*/) override {}
-    void visit(StructDefinition & /*node*/) override {}
-    void visit(StructInit & /*node*/) override {}
-    void visit(StructUninit & /*node*/) override {}
-    void visit(StructType & /*node*/) override {}
-    void visit(StructElementRefer & /*node*/) override {}
+    // void visit(StructDeclaration & /*node*/) override {}
+    // void visit(StructDefinition & /*node*/) override {}
+    // void visit(StructInit & /*node*/) override {}
+    // void visit(StructUninit & /*node*/) override {}
+    // void visit(StructType & /*node*/) override {}
+    // void visit(StructElementRefer & /*node*/) override {}
     void visit(ArrayUninit & /*node*/) override {}
     void visit(VariableInit & /*node*/) override {}
     void visit(VariableUninit & /*node*/) override {}

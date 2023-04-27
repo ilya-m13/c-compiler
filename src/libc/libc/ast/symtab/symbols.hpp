@@ -68,7 +68,13 @@ class Scope {
     }
     // Scope *get_outer_most_enclosing_scope() const;
     // Symbol *resolve(const std::string &name) const;
-    // Symbol *get_symbol(const std::string &name) const;
+    Symbol *get_symbol(const std::string &name) const {
+        auto it = symbols_.find(name);
+        if (it == symbols_.end()) {
+            return nullptr;
+        }
+        return it->second;
+    }
     const std::unordered_map<std::string_view, Symbol *> &get_symbols() const {
         return symbols_;
     }
@@ -159,16 +165,13 @@ class VariableSymbol : public Symbol, public TypedSymbol {
     std::unique_ptr<Type> type_{nullptr};
 };
 
-// class ParameterSymbol : public VariableSymbol {
+// class FieldSymbol : public VariableSymbol {
 //   public:
-//     explicit ParameterSymbol(std::string name)
-//         : VariableSymbol(std::move(name)) {}
+//     explicit FieldSymbol(std::string name) : VariableSymbol(std::move(name))
+//     {}
 // };
 
-// class FieldSymbol : public VariableSymbol {};
-
-// class StructSymbol {};
-
+// TODO: move const to variable
 class Type {
   public:
     virtual ~Type() = default;
@@ -242,5 +245,23 @@ class PrimitiveType : public Type {
     std::string name_;
     bool is_const_;
 };
+
+// class StructSymbol : public SymbolWithScope, public Type {
+//   public:
+//     explicit StructSymbol(std::string name) : name_(std::move(name)) {}
+//
+//     const std::string &get_name() const override {
+//         return name_;
+//     }
+//     const char *get_type() const override {
+//         return "str";
+//     }
+//     bool is_const() const override {
+//         return false;
+//     }
+//
+//   private:
+//     std::string name_;
+// };
 
 } // namespace c::ast::symtab

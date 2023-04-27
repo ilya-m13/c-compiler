@@ -55,35 +55,35 @@ void BreakStatement::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
-// Struct
+// // Struct
 
-void StructDeclaration::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructDeclaration::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructDefinition::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructDefinition::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructInit::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructInit::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructUninit::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructUninit::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructElementAccess::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructElementAccess::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructType::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructType::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void StructElementRefer::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void StructElementRefer::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
 // Array
 

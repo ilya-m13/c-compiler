@@ -3,7 +3,7 @@
 #include <time.h>
 
 int main(int argc, char **argv) {
-    srand(time(NULL));
+    srand(time(0));
     const int max_rand = 100;
     const int min_rand = 1;
 
