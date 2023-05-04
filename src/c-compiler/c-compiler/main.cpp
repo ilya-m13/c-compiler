@@ -1,3 +1,4 @@
+#include <libc/analyzer.hpp>
 #include <libc/dump_tokens.hpp>
 #include <libc/parser.hpp>
 #include <libc/symtab.hpp>
@@ -36,27 +37,38 @@ int main(int argc, char **argv) {
 
     if (result.count("dump-tokens") > 0) {
         c::dump_tokens(input_stream, std::cout);
-    } else if (result.count("dump-ast") > 0) {
-        auto parser_result = c::parse(input_stream);
-        if (!parser_result.errors_.empty()) {
-            c::dump_errors(parser_result.errors_, std::cerr);
-        } else {
-            c::dump_ast(parser_result.program_, std::cout);
-        }
-    } else if (result.count("dump-symtab") > 0) {
-        auto parser_result = c::parse(input_stream);
-        if (!parser_result.errors_.empty()) {
-            c::dump_errors(parser_result.errors_, std::cerr);
-        } else {
-            try {
-                auto symtab = c::get_symtab(parser_result.program_);
-                c::dump_symtab(symtab, std::cout);
-            } catch (const c::ast::symtab::UndefinedReference &ex) {
-                std::cout << ex.what() << '\n';
-            } catch (const c::ast::symtab::SymbolRedefinition &ex) {
-                std::cout << ex.what() << '\n';
-            }
-        }
+        return 0;
+    }
+
+    auto parser_result = c::parse(input_stream);
+    if (!parser_result.errors_.empty()) {
+        c::dump_errors(parser_result.errors_, std::cerr);
+        return 0;
+    }
+    if (result.count("dump-ast") > 0) {
+        c::dump_ast(parser_result.program_, std::cout);
+        return 0;
+    }
+
+    c::ast::symtab::Symtab symtab;
+    try {
+        symtab = c::get_symtab(parser_result.program_);
+    } catch (const c::ast::symtab::UndefinedReference &ex) {
+        std::cout << ex.what() << '\n';
+        return 0;
+    } catch (const c::ast::symtab::SymbolRedefinition &ex) {
+        std::cout << ex.what() << '\n';
+        return 0;
+    }
+    if (result.count("dump-symtab") > 0) {
+        c::dump_symtab(symtab, std::cout);
+        return 0;
+    }
+
+    try {
+        c::analyze(parser_result.program_, symtab);
+    } catch (const c::ast::TypeAnalyzer::Exception &ex) {
+        std::cout << ex.what() << '\n';
     }
 
     return 0;
