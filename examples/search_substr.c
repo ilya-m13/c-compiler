@@ -8,10 +8,8 @@ newline
 int strlen(char *str) {
     int ret;
 
-    if (!str)
-        return 0;
-    for (ret = 0; str[ret]; ++ret)
-        ;
+    for (ret = 0; str[ret]; ++ret) {
+    }
     return ret;
 }
 
