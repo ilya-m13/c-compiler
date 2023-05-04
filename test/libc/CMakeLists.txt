@@ -16,6 +16,7 @@ target_sources(
         libc/dump_tokens.cpp
         libc/parser.cpp
         libc/symtab.cpp
+        libc/analyzer.cpp
 )
 target_link_libraries(
     ${test_name}
