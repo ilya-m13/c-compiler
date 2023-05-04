@@ -21,6 +21,8 @@ target_sources(
         libc/symtab.hpp
         libc/ast/symtab/symtab.hpp
         libc/ast/symtab/symbols.hpp
+        libc/analyzer.hpp
+        libc/ast/type_analyzer.hpp
     PRIVATE
         libc/dump_tokens.cpp
         libc/parser.cpp
@@ -34,6 +36,8 @@ target_sources(
         libc/ast/symtab/symtab.cpp
         libc/ast/symtab/detail/builder.cpp
         libc/ast/symtab/detail/builder.hpp
+        libc/analyzer.cpp
+        libc/ast/type_analyzer.cpp
 )
 
 target_link_libraries(
