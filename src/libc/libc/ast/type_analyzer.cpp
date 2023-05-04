@@ -258,6 +258,7 @@ void TypeAnalyzer::visit(RvalueOperation &node) {
     node.expression().front()->accept(*this);
     symtab::Type *lhs = type_buf_;
     symtab::Type *to = type_buf_;
+    Node *prev = node.expression().front();
     std::size_t max_order = c_type_orders.at(type_buf_->get_name());
     bool k = true;
     for (auto it = ++node.expression().begin(); it != node.expression().end();
@@ -265,17 +266,38 @@ void TypeAnalyzer::visit(RvalueOperation &node) {
         if (k) {
             continue;
         }
+
         (*it)->accept(*this);
-        if (type_buf_->get_type() != lhs->get_type()) {
+        if (type_buf_->get_name() == "void") {
+            throw Exception("wrong operation: operand has void type");
+        }
+        if (type_buf_->get_type() == lhs->get_type() &&
+            type_buf_->get_type() != std::string("var") &&
+            dynamic_cast<ArrayElementAccess *>(*it) == nullptr &&
+            dynamic_cast<ArrayElementAccess *>(prev) == nullptr) {
             throw Exception(
                 "wrong operation between " + type_buf_->get_name() +
                 type_buf_->get_type() + " and " + lhs->get_name() +
                 lhs->get_type());
         }
-        if (type_buf_->get_name() == "void") {
-            throw Exception("wrong operation: operand has void type");
+        if (((type_buf_->get_type() == std::string("*") ||
+              (type_buf_->get_type() == std::string("[]") &&
+               dynamic_cast<ArrayElementAccess *>(*it) == nullptr)) &&
+             (lhs->get_name() == std::string("float") ||
+              lhs->get_name() == std::string("double"))) ||
+            ((lhs->get_type() == std::string("*") ||
+              (lhs->get_type() == std::string("[]") &&
+               dynamic_cast<ArrayElementAccess *>(prev) == nullptr)) &&
+             (type_buf_->get_name() == std::string("float") ||
+              type_buf_->get_name() == std::string("double")))) {
+            throw Exception(
+                "wrong operation between " + type_buf_->get_name() +
+                type_buf_->get_type() + " and " + lhs->get_name() +
+                lhs->get_type());
         }
+
         lhs = type_buf_;
+        prev = *it;
 
         if (c_type_orders.at(type_buf_->get_name()) > max_order) {
             to = type_buf_;
@@ -341,7 +363,8 @@ void TypeAnalyzer::valid_array_size_type_check(symtab::Type *type) {
     const auto &type_name = type->get_name();
     if (type->get_type() != std::string("var") ||
         type_name == std::string("float") ||
-        type_name == std::string("double")) {
+        type_name == std::string("double") ||
+        type_name == std::string("void")) {
         throw Exception("invalid array size type");
     }
 }
