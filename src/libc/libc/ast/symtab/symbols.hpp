@@ -67,13 +67,19 @@ class Scope {
         return root_path;
     }
     // Scope *get_outer_most_enclosing_scope() const;
-    // Symbol *resolve(const std::string &name) const;
+    Symbol *resolve(const std::string &name) const {
+        for (const auto *cur_scope = this; cur_scope != nullptr;
+             cur_scope = cur_scope->get_enclosing_scope()) {
+            auto *sym = cur_scope->get_symbol(name);
+            if (sym != nullptr) {
+                return sym;
+            }
+        }
+        return nullptr;
+    }
     Symbol *get_symbol(const std::string &name) const {
         auto it = symbols_.find(name);
-        if (it == symbols_.end()) {
-            return nullptr;
-        }
-        return it->second;
+        return it == symbols_.end() ? nullptr : it->second;
     }
     const std::unordered_map<std::string_view, Symbol *> &get_symbols() const {
         return symbols_;
@@ -128,6 +134,17 @@ class FunctionSymbol : public SymbolWithScope, public TypedSymbol {
     }
     std::size_t get_number_of_param() const {
         return param_num_;
+    }
+    std::vector<Symbol *> get_params() const {
+        std::vector<Symbol *> params;
+        for (std::size_t i = 0; i < param_num_; ++i) {
+            for (auto it : symbols_) {
+                if (it.second->get_insertion_order_num() == i) {
+                    params.push_back(it.second);
+                }
+            }
+        }
+        return params;
     }
 
     void set_type(std::unique_ptr<Type> &&type) override {
