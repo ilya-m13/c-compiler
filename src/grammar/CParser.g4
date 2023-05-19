@@ -59,8 +59,6 @@ function_call
 
 variable_writing
     : assignment
-    | increment
-    | decrement
     ;
 
 data_create
@@ -131,8 +129,6 @@ lvalue
 rvalue
     : literal
     | function_call
-    | increment
-    | decrement
     ;
 
 // object
@@ -237,7 +233,6 @@ rvalue_operation
 operator
     : arithmetic_operator
     | relational_operator
-    | logical_operator
     ;
 
 assignment_operator
@@ -264,38 +259,6 @@ relational_operator
     | LESS_THAN
     | GREATER_EQUAL
     | LESS_EQUAL
-    ;
-
-logical_operator
-    : NOT
-    | AND
-    | OR
-    ;
-
-increment
-    : prefix_increment
-    | postfix_increment
-    ;
-
-decrement
-    : prefix_decrement
-    | postfix_decrement
-    ;
-
-prefix_increment
-    : INCREMENT lvalue
-    ;
-
-postfix_increment
-    : lvalue INCREMENT
-    ;
-
-prefix_decrement
-    : DECREMENT lvalue
-    ;
-
-postfix_decrement
-    : lvalue DECREMENT
     ;
 
 // types

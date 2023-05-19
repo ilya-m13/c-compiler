@@ -312,41 +312,43 @@ std::any Builder::visitRelational_operator(
         program_.create_node<RelationalOperator>(relational_operator));
 }
 
-std::any
-Builder::visitLogical_operator(CParser::Logical_operatorContext *context) {
-    auto logical_operator = context->children[0]->getText();
+// std::any
+// Builder::visitLogical_operator(CParser::Logical_operatorContext *context) {
+//     auto logical_operator = context->children[0]->getText();
 
-    return static_cast<Node *>(
-        program_.create_node<LogicalOperator>(logical_operator));
-}
+//     return static_cast<Node *>(
+//         program_.create_node<LogicalOperator>(logical_operator));
+// }
 
-std::any
-Builder::visitPrefix_increment(CParser::Prefix_incrementContext *context) {
-    auto *value = std::any_cast<Node *>(visit(context->lvalue()));
+// std::any
+// Builder::visitPrefix_increment(CParser::Prefix_incrementContext *context) {
+//     auto *value = std::any_cast<Node *>(visit(context->lvalue()));
 
-    return static_cast<Node *>(program_.create_node<PrefixIncrement>(value));
-}
+//     return static_cast<Node *>(program_.create_node<PrefixIncrement>(value));
+// }
 
-std::any
-Builder::visitPostfix_increment(CParser::Postfix_incrementContext *context) {
-    auto *value = std::any_cast<Node *>(visit(context->lvalue()));
+// std::any
+// Builder::visitPostfix_increment(CParser::Postfix_incrementContext *context) {
+//     auto *value = std::any_cast<Node *>(visit(context->lvalue()));
 
-    return static_cast<Node *>(program_.create_node<PostfixIncrement>(value));
-}
+//     return static_cast<Node
+//     *>(program_.create_node<PostfixIncrement>(value));
+// }
 
-std::any
-Builder::visitPrefix_decrement(CParser::Prefix_decrementContext *context) {
-    auto *value = std::any_cast<Node *>(visit(context->lvalue()));
+// std::any
+// Builder::visitPrefix_decrement(CParser::Prefix_decrementContext *context) {
+//     auto *value = std::any_cast<Node *>(visit(context->lvalue()));
 
-    return static_cast<Node *>(program_.create_node<PrefixDecrement>(value));
-}
+//     return static_cast<Node *>(program_.create_node<PrefixDecrement>(value));
+// }
 
-std::any
-Builder::visitPostfix_decrement(CParser::Postfix_decrementContext *context) {
-    auto *value = std::any_cast<Node *>(visit(context->lvalue()));
+// std::any
+// Builder::visitPostfix_decrement(CParser::Postfix_decrementContext *context) {
+//     auto *value = std::any_cast<Node *>(visit(context->lvalue()));
 
-    return static_cast<Node *>(program_.create_node<PostfixDecrement>(value));
-}
+//     return static_cast<Node
+//     *>(program_.create_node<PostfixDecrement>(value));
+// }
 
 // Types
 

@@ -67,6 +67,10 @@ void TypeAnalyzer::visit(Expression &node) {
 }
 
 void TypeAnalyzer::visit(FunctionCall &node) {
+    if (node.id() == "printf") {
+        return;
+    }
+
     symtab::FunctionSymbol *func_sym = nullptr;
     for (auto *stack_node = symtab_.find_sym(node.id()); stack_node != nullptr;
          stack_node = stack_node->prev_) {
@@ -307,37 +311,37 @@ void TypeAnalyzer::visit(RvalueOperation &node) {
     type_buf_ = to;
 }
 
-void TypeAnalyzer::visit(PrefixIncrement &node) {
-    node.value()->accept(*this);
-    if (type_buf_->get_type() == std::string("[]") &&
-        dynamic_cast<ArrayElementAccess *>(node.value()) == nullptr) {
-        throw Exception("wrong increment: lvalue has array type");
-    }
-}
+// void TypeAnalyzer::visit(PrefixIncrement &node) {
+//     node.value()->accept(*this);
+//     if (type_buf_->get_type() == std::string("[]") &&
+//         dynamic_cast<ArrayElementAccess *>(node.value()) == nullptr) {
+//         throw Exception("wrong increment: lvalue has array type");
+//     }
+// }
 
-void TypeAnalyzer::visit(PostfixIncrement &node) {
-    node.value()->accept(*this);
-    if (type_buf_->get_type() == std::string("[]") &&
-        dynamic_cast<ArrayElementAccess *>(node.value()) == nullptr) {
-        throw Exception("wrong increment: lvalue has array type");
-    }
-}
+// void TypeAnalyzer::visit(PostfixIncrement &node) {
+//     node.value()->accept(*this);
+//     if (type_buf_->get_type() == std::string("[]") &&
+//         dynamic_cast<ArrayElementAccess *>(node.value()) == nullptr) {
+//         throw Exception("wrong increment: lvalue has array type");
+//     }
+// }
 
-void TypeAnalyzer::visit(PrefixDecrement &node) {
-    node.value()->accept(*this);
-    if (type_buf_->get_type() == std::string("[]") &&
-        dynamic_cast<ArrayElementAccess *>(node.value()) == nullptr) {
-        throw Exception("wrong decrement: lvalue has array type");
-    }
-}
+// void TypeAnalyzer::visit(PrefixDecrement &node) {
+//     node.value()->accept(*this);
+//     if (type_buf_->get_type() == std::string("[]") &&
+//         dynamic_cast<ArrayElementAccess *>(node.value()) == nullptr) {
+//         throw Exception("wrong decrement: lvalue has array type");
+//     }
+// }
 
-void TypeAnalyzer::visit(PostfixDecrement &node) {
-    node.value()->accept(*this);
-    if (type_buf_->get_type() == std::string("[]") &&
-        dynamic_cast<ArrayElementAccess *>(node.value()) == nullptr) {
-        throw Exception("wrong decrement: lvalue has array type");
-    }
-}
+// void TypeAnalyzer::visit(PostfixDecrement &node) {
+//     node.value()->accept(*this);
+//     if (type_buf_->get_type() == std::string("[]") &&
+//         dynamic_cast<ArrayElementAccess *>(node.value()) == nullptr) {
+//         throw Exception("wrong decrement: lvalue has array type");
+//     }
+// }
 
 // Literals
 

@@ -72,8 +72,8 @@ TEST(Symtab, ValidSymtabBuilding) {
 
 TEST(Symtab, UndefinedReference) {
     std::vector<std::string> strings = {
-        "int main() {printf();}",
-        "int main() {int main; {printf();}}",
+        "int main() {undef_func();}",
+        "int main() {int main; {undef_func();}}",
         "int main() {int main = undef_sym;}",
         "int main() {int main; {int main = undef_sym;}}"};
     std::stringstream sstream;

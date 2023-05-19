@@ -512,78 +512,78 @@ class RelationalOperator final : public Node {
     std::string relational_operator_;
 };
 
-class LogicalOperator final : public Node {
-  public:
-    explicit LogicalOperator(std::string logical_operator)
-        : logical_operator_(std::move(logical_operator)) {}
-    const std::string &logical_operator() const {
-        return logical_operator_;
-    }
-    void accept(Visitor &visitor) override;
+// class LogicalOperator final : public Node {
+//   public:
+//     explicit LogicalOperator(std::string logical_operator)
+//         : logical_operator_(std::move(logical_operator)) {}
+//     const std::string &logical_operator() const {
+//         return logical_operator_;
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    std::string logical_operator_;
-};
+//   private:
+//     std::string logical_operator_;
+// };
 
-class PrefixIncrement final : public Node {
-  public:
-    explicit PrefixIncrement(Node *value) : value_(value) {}
-    Node *value() const {
-        return value_;
-    }
-    const char *increment() const {
-        return "++";
-    }
-    void accept(Visitor &visitor) override;
+// class PrefixIncrement final : public Node {
+//   public:
+//     explicit PrefixIncrement(Node *value) : value_(value) {}
+//     Node *value() const {
+//         return value_;
+//     }
+//     const char *increment() const {
+//         return "++";
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    Node *value_;
-};
+//   private:
+//     Node *value_;
+// };
 
-class PostfixIncrement final : public Node {
-  public:
-    explicit PostfixIncrement(Node *value) : value_(value) {}
-    Node *value() const {
-        return value_;
-    }
-    const char *increment() const {
-        return "++";
-    }
-    void accept(Visitor &visitor) override;
+// class PostfixIncrement final : public Node {
+//   public:
+//     explicit PostfixIncrement(Node *value) : value_(value) {}
+//     Node *value() const {
+//         return value_;
+//     }
+//     const char *increment() const {
+//         return "++";
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    Node *value_;
-};
+//   private:
+//     Node *value_;
+// };
 
-class PrefixDecrement final : public Node {
-  public:
-    explicit PrefixDecrement(Node *value) : value_(value) {}
-    Node *value() const {
-        return value_;
-    }
-    const char *decrement() const {
-        return "--";
-    }
-    void accept(Visitor &visitor) override;
+// class PrefixDecrement final : public Node {
+//   public:
+//     explicit PrefixDecrement(Node *value) : value_(value) {}
+//     Node *value() const {
+//         return value_;
+//     }
+//     const char *decrement() const {
+//         return "--";
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    Node *value_;
-};
+//   private:
+//     Node *value_;
+// };
 
-class PostfixDecrement final : public Node {
-  public:
-    explicit PostfixDecrement(Node *value) : value_(value) {}
-    Node *value() const {
-        return value_;
-    }
-    const char *decrement() const {
-        return "--";
-    }
-    void accept(Visitor &visitor) override;
+// class PostfixDecrement final : public Node {
+//   public:
+//     explicit PostfixDecrement(Node *value) : value_(value) {}
+//     Node *value() const {
+//         return value_;
+//     }
+//     const char *decrement() const {
+//         return "--";
+//     }
+//     void accept(Visitor &visitor) override;
 
-  private:
-    Node *value_;
-};
+//   private:
+//     Node *value_;
+// };
 
 // Types
 

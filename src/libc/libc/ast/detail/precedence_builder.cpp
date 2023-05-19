@@ -82,27 +82,27 @@ void PrecedenceBuilder::visit(RelationalOperator &node) {
     handle_operator(operator_data);
 }
 
-void PrecedenceBuilder::visit(LogicalOperator &node) {
-    auto operator_data =
-        OperatorData::give_precedence(&node, node.logical_operator());
-    handle_operator(operator_data);
-}
+// void PrecedenceBuilder::visit(LogicalOperator &node) {
+//     auto operator_data =
+//         OperatorData::give_precedence(&node, node.logical_operator());
+//     handle_operator(operator_data);
+// }
 
-void PrecedenceBuilder::visit(PrefixIncrement &node) {
-    rpn_.push_back(&node);
-}
+// void PrecedenceBuilder::visit(PrefixIncrement &node) {
+//     rpn_.push_back(&node);
+// }
 
-void PrecedenceBuilder::visit(PostfixIncrement &node) {
-    rpn_.push_back(&node);
-}
+// void PrecedenceBuilder::visit(PostfixIncrement &node) {
+//     rpn_.push_back(&node);
+// }
 
-void PrecedenceBuilder::visit(PrefixDecrement &node) {
-    rpn_.push_back(&node);
-}
+// void PrecedenceBuilder::visit(PrefixDecrement &node) {
+//     rpn_.push_back(&node);
+// }
 
-void PrecedenceBuilder::visit(PostfixDecrement &node) {
-    rpn_.push_back(&node);
-}
+// void PrecedenceBuilder::visit(PostfixDecrement &node) {
+//     rpn_.push_back(&node);
+// }
 
 void PrecedenceBuilder::visit(FunctionCall &node) {
     rpn_.push_back(&node);

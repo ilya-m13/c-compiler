@@ -145,8 +145,6 @@ TEST(ParserTest, InvalidFunctionCall) {
 
 TEST(ParserTest, InvalidVariableWriting) {
     std::vector<std::string> strings = {
-        "++i;",
-        "--i;",
         "var = var;",
         "int var = 0;",
         "int main() {var 0;}",

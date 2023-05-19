@@ -80,16 +80,15 @@ class Builder final : public CParserBaseVisitor {
         CParser::Arithmetic_operatorContext *context) override;
     std::any visitRelational_operator(
         CParser::Relational_operatorContext *context) override;
-    std::any
-    visitLogical_operator(CParser::Logical_operatorContext *context) override;
-    std::any
-    visitPrefix_increment(CParser::Prefix_incrementContext *context) override;
-    std::any
-    visitPostfix_increment(CParser::Postfix_incrementContext *context) override;
-    std::any
-    visitPrefix_decrement(CParser::Prefix_decrementContext *context) override;
-    std::any
-    visitPostfix_decrement(CParser::Postfix_decrementContext *context) override;
+    // std::any
+    // visitLogical_operator(CParser::Logical_operatorContext *context)
+    // override; std::any visitPrefix_increment(CParser::Prefix_incrementContext
+    // *context) override; std::any
+    // visitPostfix_increment(CParser::Postfix_incrementContext *context)
+    // override; std::any visitPrefix_decrement(CParser::Prefix_decrementContext
+    // *context) override; std::any
+    // visitPostfix_decrement(CParser::Postfix_decrementContext *context)
+    // override;
 
     // Types
 

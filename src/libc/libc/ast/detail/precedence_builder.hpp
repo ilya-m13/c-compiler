@@ -17,12 +17,12 @@ class PrecedenceBuilder final : public Visitor {
     void visit(AssignmentOperator &node) override;
     void visit(ArithmeticOperator &node) override;
     void visit(RelationalOperator &node) override;
-    void visit(LogicalOperator &node) override;
+    // void visit(LogicalOperator &node) override;
 
-    void visit(PrefixIncrement &node) override;
-    void visit(PostfixIncrement &node) override;
-    void visit(PrefixDecrement &node) override;
-    void visit(PostfixDecrement &node) override;
+    // void visit(PrefixIncrement &node) override;
+    // void visit(PostfixIncrement &node) override;
+    // void visit(PrefixDecrement &node) override;
+    // void visit(PostfixDecrement &node) override;
 
     void visit(FunctionCall &node) override;
     void visit(ArrayElementAccess &node) override;

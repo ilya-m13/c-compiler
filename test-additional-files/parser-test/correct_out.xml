@@ -29,22 +29,19 @@
             <arg>var_</arg>
           </call>
         </arg>
-        <arg>++var_</arg>
-        <arg>var_var_--array_[var_]++var_var_<call name="call">
+        <arg>var_array_[var_]+var_var_<call name="call">
             <arg>arg1_</arg>
             <arg>arg2</arg>
-          </call>1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||</arg>
+          </call>1*"str"/+var_-&lt;var_&gt;==1var_*1+!=</arg>
         <arg>
-          <variable-writing>var_var_var_var_var_--array_[var_]++var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||*=+==</variable-writing>
+          <variable-writing>var_var_var_var_array_[var_]+var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1var_*1+!=*=+==</variable-writing>
         </arg>
       </call>
-      <variable-writing>++var_</variable-writing>
-      <variable-writing>var_[var_]++</variable-writing>
-      <variable-writing>var_var_var_var_var_--array_[var_]++var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||*=+==</variable-writing>
-      <data-create const="true" type="int" name="var_">var_var_--array_[var_]++var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||</data-create>
+      <variable-writing>var_var_var_var_array_[var_]+var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1var_*1+!=*=+==</variable-writing>
+      <data-create const="true" type="int" name="var_">var_array_[var_]+var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1var_*1+!=</data-create>
       <data-create type="char" name="var_" />
       <data-create type="float" name="var_">var_</data-create>
-      <data-create const="true" type="double" level="*" name="p_">var_var_--array_[var_]++var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1!=&amp;&amp;var_&amp;&amp;||1||</data-create>
+      <data-create const="true" type="double" level="*" name="p_">var_array_[var_]+var_var_<call name="call" />1*"str"/+var_-&lt;var_&gt;==1var_*1+!=</data-create>
       <data-create type="short" level="**" name="p_" />
       <data-create type="long" level="*" name="p_" />
       <data-create type="void" level="*" name="p_">var_</data-create>

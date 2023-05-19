@@ -55,11 +55,11 @@ class Visitor {
     virtual void visit(AssignmentOperator &node) = 0;
     virtual void visit(ArithmeticOperator &node) = 0;
     virtual void visit(RelationalOperator &node) = 0;
-    virtual void visit(LogicalOperator &node) = 0;
-    virtual void visit(PrefixIncrement &node) = 0;
-    virtual void visit(PostfixIncrement &node) = 0;
-    virtual void visit(PrefixDecrement &node) = 0;
-    virtual void visit(PostfixDecrement &node) = 0;
+    // virtual void visit(LogicalOperator &node) = 0;
+    // virtual void visit(PrefixIncrement &node) = 0;
+    // virtual void visit(PostfixIncrement &node) = 0;
+    // virtual void visit(PrefixDecrement &node) = 0;
+    // virtual void visit(PostfixDecrement &node) = 0;
 
     // Types
 

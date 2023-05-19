@@ -63,15 +63,18 @@ void Builder::visit(Expression &node) {
 }
 
 void Builder::visit(FunctionCall &node) {
-    auto *stack_node = symtab_.find_sym(node.id());
-    for (; stack_node != nullptr; stack_node = stack_node->prev_) {
-        if (dynamic_cast<FunctionSymbol *>(stack_node->sym_.get()) != nullptr) {
-            break;
+    if (node.id() != "printf") {
+        auto *stack_node = symtab_.find_sym(node.id());
+        for (; stack_node != nullptr; stack_node = stack_node->prev_) {
+            if (dynamic_cast<FunctionSymbol *>(stack_node->sym_.get()) !=
+                nullptr) {
+                break;
+            }
         }
-    }
-    if (stack_node == nullptr) {
-        throw UndefinedReference(
-            "Reference to an undefined symbol " + node.id());
+        if (stack_node == nullptr) {
+            throw UndefinedReference(
+                "Reference to an undefined symbol " + node.id());
+        }
     }
 
     for (auto *arg : node.args()) {
@@ -364,21 +367,21 @@ void Builder::visit(RvalueOperation &node) {
     }
 }
 
-void Builder::visit(PrefixIncrement &node) {
-    node.value()->accept(*this);
-}
+// void Builder::visit(PrefixIncrement &node) {
+//     node.value()->accept(*this);
+// }
 
-void Builder::visit(PostfixIncrement &node) {
-    node.value()->accept(*this);
-}
+// void Builder::visit(PostfixIncrement &node) {
+//     node.value()->accept(*this);
+// }
 
-void Builder::visit(PrefixDecrement &node) {
-    node.value()->accept(*this);
-}
+// void Builder::visit(PrefixDecrement &node) {
+//     node.value()->accept(*this);
+// }
 
-void Builder::visit(PostfixDecrement &node) {
-    node.value()->accept(*this);
-}
+// void Builder::visit(PostfixDecrement &node) {
+//     node.value()->accept(*this);
+// }
 
 // Types
 

@@ -274,29 +274,29 @@ void XmlSerializer::visit(RelationalOperator &node) {
     append_text(node.relational_operator().c_str());
 }
 
-void XmlSerializer::visit(LogicalOperator &node) {
-    append_text(node.logical_operator().c_str());
-}
+// void XmlSerializer::visit(LogicalOperator &node) {
+//     append_text(node.logical_operator().c_str());
+// }
 
-void XmlSerializer::visit(PrefixIncrement &node) {
-    append_text("++");
-    node.value()->accept(*this);
-}
+// void XmlSerializer::visit(PrefixIncrement &node) {
+//     append_text("++");
+//     node.value()->accept(*this);
+// }
 
-void XmlSerializer::visit(PostfixIncrement &node) {
-    node.value()->accept(*this);
-    append_text("++");
-}
+// void XmlSerializer::visit(PostfixIncrement &node) {
+//     node.value()->accept(*this);
+//     append_text("++");
+// }
 
-void XmlSerializer::visit(PrefixDecrement &node) {
-    append_text("--");
-    node.value()->accept(*this);
-}
+// void XmlSerializer::visit(PrefixDecrement &node) {
+//     append_text("--");
+//     node.value()->accept(*this);
+// }
 
-void XmlSerializer::visit(PostfixDecrement &node) {
-    node.value()->accept(*this);
-    append_text("--");
-}
+// void XmlSerializer::visit(PostfixDecrement &node) {
+//     node.value()->accept(*this);
+//     append_text("--");
+// }
 
 // Types
 

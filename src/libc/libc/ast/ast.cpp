@@ -131,25 +131,25 @@ void RelationalOperator::accept(Visitor &visitor) {
     visitor.visit(*this);
 }
 
-void LogicalOperator::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void LogicalOperator::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void PrefixIncrement::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void PrefixIncrement::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void PostfixIncrement::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void PostfixIncrement::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void PrefixDecrement::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void PrefixDecrement::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
-void PostfixDecrement::accept(Visitor &visitor) {
-    visitor.visit(*this);
-}
+// void PostfixDecrement::accept(Visitor &visitor) {
+//     visitor.visit(*this);
+// }
 
 // Types
 
