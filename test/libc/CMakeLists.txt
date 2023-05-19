@@ -17,6 +17,7 @@ target_sources(
         libc/parser.cpp
         libc/symtab.cpp
         libc/analyzer.cpp
+        libc/code_generator.cpp
 )
 target_link_libraries(
     ${test_name}
