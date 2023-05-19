@@ -633,7 +633,7 @@ void CodeGenerator::cast(IrNode &lhs, IrNode &rhs) {
         if (lhs.type_[0] == 'i') {
             cast_out(lhs, rhs, ir_name, "sitofp");
         } else {
-            cast_out(rhs, lhs, ir_name, "fptosi");
+            cast_out(rhs, lhs, ir_name, "sitofp");
         }
     }
 }
@@ -666,10 +666,10 @@ void CodeGenerator::cast_to(const IrNode &to, IrNode &from) {
 void CodeGenerator::cast_out(
     IrNode &from, const IrNode &to, std::string &ir_name, std::string inst) {
     if (std::isdigit(from.name_[0]) != 0) {
-        from.type_ = to.type_;
         if (from.type_[0] != to.type_[0]) {
             from.name_ += ".0";
         }
+        from.type_ = to.type_;
         return;
     }
     if (from.type_ == std::string("i1")) {
