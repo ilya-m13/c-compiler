@@ -23,6 +23,8 @@ target_sources(
         libc/ast/symtab/symbols.hpp
         libc/analyzer.hpp
         libc/ast/type_analyzer.hpp
+        libc/ast/code_generator.hpp
+        libc/code_generator.hpp
     PRIVATE
         libc/dump_tokens.cpp
         libc/parser.cpp
@@ -38,6 +40,8 @@ target_sources(
         libc/ast/symtab/detail/builder.hpp
         libc/analyzer.cpp
         libc/ast/type_analyzer.cpp
+        libc/ast/code_generator.cpp
+        libc/code_generator.cpp
 )
 
 target_link_libraries(

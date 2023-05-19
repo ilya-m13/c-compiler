@@ -27,7 +27,8 @@ Checks: >
   -hicpp-special-member-functions,
   -readability-convert-member-functions-to-static,
   -google-readability-todo,
-  -hicpp-signed-bitwise
+  -hicpp-signed-bitwise,
+  -cert-env33-c
 WarningsAsErrors: true
 HeaderFilterRegex: '.*/libc/'
 AnalyzeTemporaryDtors: false

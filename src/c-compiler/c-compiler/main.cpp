@@ -1,10 +1,12 @@
 #include <libc/analyzer.hpp>
+#include <libc/code_generator.hpp>
 #include <libc/dump_tokens.hpp>
 #include <libc/parser.hpp>
 #include <libc/symtab.hpp>
 
 #include <cxxopts.hpp>
 
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -18,6 +20,7 @@ int main(int argc, char **argv) {
         ("dump-tokens", "")
         ("dump-ast", "")
         ("dump-symtab", "")
+        ("dump-asm", "")
         ("h,help", "")
     ;
     // clang-format on
@@ -70,6 +73,27 @@ int main(int argc, char **argv) {
     } catch (const c::ast::TypeAnalyzer::Exception &ex) {
         std::cout << ex.what() << '\n';
     }
+
+    if (result.count("dump-asm") > 0) {
+        c::generate(std::cout, parser_result.program_, symtab);
+        return 0;
+    }
+
+    std::string filename =
+        result["file-path"].as<std::filesystem::path>().filename();
+    filename.replace(filename.find_first_of('.'), 3, ".ll");
+
+    std::ofstream ir_out(filename);
+    if (!ir_out.good()) {
+        std::cerr << "Unable to write stream - " << filename << "\n";
+        return 0;
+    }
+
+    c::generate(ir_out, parser_result.program_, symtab);
+
+    ir_out.close();
+
+    std::system(("clang " + filename).c_str());
 
     return 0;
 }
